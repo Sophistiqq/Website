@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BreadBites: Home</title>
+    <link rel="stylesheet" href="./css/home.css">
+    <link rel="stylesheet" href="./css/products.css">
+    <script src="./scripts/home.js" defer></script>
+    <script src="./scripts/validation.js" defer></script>
+
+</head>
+
+<body>
+    <header>
+        <nav class="nav">
+            <!-- Logo -->
+            <div class="logo">
+                <img src="/images/bread 1.png" alt="logo">
+                <div class="brand">
+                    <p>BreadBites</p>
+                    <p>Affordable Bakery</p>
+                </div>
+            </div>
+            <!-- Navigation -->
+            <div class="links">
+                <a href="index.html">Home</a>
+                <a href="/products">Products</a>
+                <a href="/services">Services</a>
+                <a href="#about">About</a>
+            </div>
+            <button class="signinBtn" id="signInBtn">Sign In</button>
+        </nav>
+    </header>
+
+
+    <main>
+        <div class="main">
+            <div class="hero-section">
+                <div>
+                    <h1 class="title"><span>BreadBites</span>: Affordable Bakery</h1>
+                    <p class="motto">Indulge in Irresistible Delights, Without Breaking the Bank </p>
+                </div>
+
+                <p class="description">Explore our delectable selection of slice cakes,<br> mini donuts, and cupcakes,
+                    all
+                    crafted with care <br>and offered at unbeatable prices.
+                    <br><br>At BreadBites, we believe in quality without compromise.
+                </p>
+
+            </div>
+            <div class="contacts-section">
+                <h3>Contact us @</h3>
+                <!-- button links -->
+                <div class="contact-links">
+                    <!-- facebook, messenger, twitter, gmail -->
+                    <a href="https://www.facebook.com/"><img src="/images/facebook.png" alt="facebook"></a>
+                    <a href="https://www.messenger.com/"><img src="/images/messenger.png" alt="messenger"></a>
+                    <a href="https://twitter.com/"><img src="/images/twitter.png" alt="twitter"></a>
+                    <a href="https://mail.google.com/"><img src="/images/gmail.png" alt="gmail"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="right">
+            <a href="/products" class="donut"><img src="/images/Donut-removebg-preview 1.png" alt="Donut"></a>
+            <div class="arrow">
+                <h3>Click here to see our Donuts</h3>
+                <img src="/images/arrow.png" alt="">
+            </div>
+        </div>
+
+
+        <div class="popup">
+            <div class="forms">
+                <form action="/signin" method="post" class="signin">
+                    <h1>Sign In</h1>
+                    <div class="inputfield">
+                        <label for="">Username</label>
+                        <input type="text" class="username" name="username" required>
+                    </div>
+                    <div class="inputfield">
+                        <label for="">Password</label>
+                        <input type="password" class="password" name="password" required>
+                    </div>
+                    <button type="submit">Sign In</button>
+                </form>
+
+                <form action="/register" method="post" class="register hide">
+                    <h1>Register</h1>
+                    <div class="inputfield">
+                        <label for="">Username</label>
+                        <input type="text" name="username" required>
+                    </div>
+                    <div class="inputfield">
+                        <label for="">Email</label>
+                        <input type="text" name="email" required>
+                    </div>
+                    <div class="inputfield">
+                        <label for="">Password</label>
+                        <input type="password" name="password" required>
+                    </div>
+                    <div class="inputfield">
+                        <label for="">Contact Number</label>
+                        <input type="text" name="contact_number" required>
+                    </div>
+                    <div class="inputfield">
+                        <label for="">Address</label>
+                        <input type="text" name="address" required>
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+                <button id="closeBtn">Close</button>
+                <button id="signinOrRegister">Register</button>
+            </div>
+        </div>
+    </main>
+
+    <div class="second-section">
+        <h2>Our Other Products</h2>
+        <div class="products">
+            <div class="product">
+                <img src="/images/products/cupcake.png" alt="Cupcake">
+                <h3>Cupcakes</h3>
+                <p>Our cupcakes are baked fresh daily and come in a variety of flavors. Perfect for any occasion or just
+                    as a sweet treat.</p>
+                <button><a href="/cupcakes">See our Cupcakes</a></button>
+            </div>
+            <div class="product">
+                <img src="/images/products/sliced-cake.png" alt="Slice Cake">
+                <h3>Slice Cakes</h3>
+                <p>Our slice cakes are made with the finest ingredients and are perfect for sharing with friends and
+                    family.</p>
+                <button><a href="/slice-cakes">See our Slice Cakes</a></button>
+            </div>
+            <div class="product">
+                <img src="/images/products/mini-donut.png" alt="Mini Donut">
+                <h3>Mini Donuts</h3>
+                <p>Our mini donuts are the perfect size for snacking and come in a variety of flavors. Try them all!</p>
+                <button><a href="/mini-donuts">See our Mini Donuts</a></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="about-section" id="about">
+        <h2>About Us</h2>
+        <div class="about-content">
+            <p>We are a family-owned bakery that has been serving delicious treats for over 20 years. Our passion for
+                baking started with our grandmother's recipes and has been passed down through generations. We use only
+                the finest ingredients and bake everything fresh daily. Come visit us and taste the difference!</p>
+        </div>
+    </div>
+    <footer></footer>
+    <img src="/images/bread 1.png" alt="" class="logo-footer">
+</body>
+
+
+</html>
