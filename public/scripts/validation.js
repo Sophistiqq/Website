@@ -15,6 +15,11 @@ function validateForm(event, form) {
     var username = form['username'].value;
     var password = form['password'].value;
 
+    var errorElements = form.querySelectorAll('.error');
+    errorElements.forEach(function (errorElement) {
+        errorElement.remove();
+    });
+
     if (!/^[\w-]{3,16}$/.test(username)) {
         event.preventDefault();
         var errorElement = document.createElement('div');
@@ -23,7 +28,7 @@ function validateForm(event, form) {
         form.appendChild(errorElement);
     }
 
-    if (!/^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d]{8,32}$/.test(password)) {
+    if (!/^(?=.*[a-zA-Z])(?=.*\d).{8,}$/.test(password)) {
         event.preventDefault();
         var errorElement = document.createElement('div');
         errorElement.classList.add('error');

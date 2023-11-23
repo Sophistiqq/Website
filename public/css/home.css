@@ -92,6 +92,31 @@ body {
     background-color: var(--accent);
 }
 
+.profileBtn, .adminBtn {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    text-decoration: none;
+}
+
+.profileBtn:hover {
+    transform: scale(1.1);
+    background-color: var(--accent);
+}
+.logout {
+    display: grid;
+    place-items: center;
+    filter: invert();
+    padding: .2rem;
+    border-radius: .5rem;
+    margin-inline: 1rem;
+}
+
 
 #menuBtn {
     display: none;
@@ -114,7 +139,7 @@ main {
     gap: 1rem;
 }
 .hero-section {
-    font-size: 1.3rem;
+    font-size: 2rem;
 }
 .hero-section div {
     line-height: 2.5rem;
@@ -140,7 +165,7 @@ main {
 .right {
     position: relative;
 }
-.right .donut {
+#donutmalaki {
     z-index: 0;
     animation: move 2s infinite;
 }
@@ -149,7 +174,7 @@ main {
         transform: translateY(0);
     }
     50% {
-        transform: translateY(-10px);
+        transform: translateY(-15px);
     }
     100% {
         transform: translateY(0);
@@ -170,6 +195,8 @@ main {
     transform: scale(-1);
     transform: rotate(150deg);
 }
+
+
 
 .popup {
     position: fixed;
@@ -195,6 +222,7 @@ main {
     align-items: center;
     padding: 3rem;
     position: relative;
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.373);
 }
 .forms form {
     transition: all 0.3s ease-in-out;
@@ -236,6 +264,7 @@ main {
 .inputfield input {
     padding: .5rem 1rem;
     border-radius: .3rem;
+    width: 15vw;
     outline: none;
     border: 1px solid gray;
 }
@@ -256,6 +285,95 @@ main {
     transform: scale(1.1);
 }
 
+
+@media only screen and (max-width: 680px) {
+    .popup {
+        position: fixed;
+        inset: 0;
+        backdrop-filter: blur(5px);
+        z-index: 100;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    }
+    .active {
+        opacity: 1;
+        visibility: visible;
+    }
+    .popup .forms {
+        background-color: var(--secondary-color);
+        border-radius: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 3rem;
+        position: relative;
+        box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.373);
+    }
+    .forms form {
+        transition: all 0.3s ease-in-out;
+    }
+    #closeBtn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        cursor: pointer;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        font-size: 1.5rem;
+    }
+    #signinOrRegister {
+        position: absolute;
+        z-index: 100;
+        bottom: -5%;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: .5rem 1rem;
+        background-color: var(--secondary-color);
+        border: none;
+        border-top: 1px solid gray;
+        border-radius: .5rem;
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        color: var(--text-color);
+    }
+    #signinOrRegister:hover {
+        background-color: var(--accent);
+    }
+
+    .inputfield {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: .5rem;
+    }
+    .inputfield input {
+        padding: .5rem 1rem;
+        border-radius: .3rem;
+        width: 60vw; 
+        outline: none;
+        border: 1px solid gray;
+    }
+    .hide {
+        width: 0;
+        overflow: hidden;
+        height: 0;
+    }
+    .forms form button {
+        padding: .5rem 1rem;
+        background-color: var(--primary-color);
+        border: none;
+        border-radius: .5rem;
+        margin: auto;
+    }
+    .forms form button:hover {
+        background-color: var(--accent);
+        transform: scale(1.1);
+    }
+}
 
 
 
@@ -295,4 +413,19 @@ main {
     main {
         height: 100vh;
     }
+
+}
+
+
+
+.button-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.button-wrapper a,
+.button-wrapper button {
+    margin-right: 1rem;
 }

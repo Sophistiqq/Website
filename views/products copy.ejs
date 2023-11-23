@@ -4,10 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products</title>
+    <title>Document</title>
     <!-- use css from public folder -->
     <link rel="stylesheet" href="./css/products-page.css">
-    <link rel="stylesheet" href="./css/products-page-phone.css">
     <script src="./scripts/products.js" defer></script>
 </head>
 
@@ -27,23 +26,15 @@
                 <a href="/#about">About</a>
             </div>
             <% if (loggedIn) { %>
-                <% if (role === "admin") { %>
-                    <div class="button-wrapper">
-                        <button class="adminBtn cartBtn mobile-only">Open Cart</button>
-                        <a href="/admin" class="adminBtn">Admin Panel</a>
-                        <a href="/logout" class="logout" title="Log out"><img src="/images/logout.png" alt=""></a>
-                    </div>
-                <% } else { %>
-                    <div class="button-wrapper">
+                <% if (role==="admin" ) { %>
+                    <a href="/admin" class="adminBtn">Admin Panel</a>
+                    <% } else { %>
                         <a href="/profile" class="profileBtn">Profile</a>
-                        <a href="/logout" class="logout" title="Log out"><img src="/images/logout.png" alt=""></a>
-                    </div>
-                <% } %>
-                <% } else { %>
-                    <div class="button-wrapper">
-                        <button class="signinBtn" id="signInBtn">Sign In</button>
-                    </div>
-                <% } %>
+                        <% } %>
+                            <a href="/logout" class="logout"><img src="/images/logout.png" alt=""></a>
+                            <% } else { %>
+                                <button class="signinBtn" id="signInBtn">Sign In</button>
+                                <% } %>
         </nav>
 
     </header>
@@ -100,115 +91,119 @@
     </div>
 
     <div class="products-body">
+        <!-- Make a nav for categories, Mini-Donuts, Sliced Cake, Cupcakes -->
         <nav class="categories">
             <h1>Categories</h1>
-            <div class="categories-link">
-                <a href="#mini-donuts">Mini-Donuts</a>
-                <a href="#sliced-cake">Sliced Cake</a>
-                <a href="#cupcakes">Cupcakes</a>
-            </div>
+            <a href="#mini-donuts" class="active">Mini-Donuts</a>
+            <a href="#sliced-cake">Sliced Cake</a>
+            <a href="#cupcakes">Cupcakes</a>
         </nav>
 
         <div class="products">
             <section class="sections" id="mini-donuts">
-                <% products.filter(product => product.category === 'md').forEach((product, index) => { %>
+                <% products.filter(product=> product.category === 'md').forEach((product, index) => { %>
                     <div class="product">
                         <img src="<%= product.image_loc %>" alt="Product Image">
                         <div class="product-info">
-                            <h1><%= product.product_name %></h1>
-                            <p><%= product.product_description %></p>
-                            <p>Price: <%= product.price %></p>
+                            <h1>
+                                <%= product.product_name %>
+                            </h1>
+                            <p>
+                                <%= product.product_description %>
+                            </p>
+                            <p>Price: <%= product.price %>
+                            </p>
                             <button class="add-to-cart" data-product-id="<%= product.id %>">Add to Cart</button>
                             <div class="navigation-buttons">
-                                <% if (index > 0) { %>
+                                <% if (index> 0) { %>
                                     <button class="previous-product">Previous</button>
-                                <% } %>
-                                <% if (index < products.filter(product => product.category === 'md').length - 1) { %>
-                                    <button class="next-product">Next</button>
-                                <% } %>
+                                    <% } %>
+                                        <% if (index < products.filter(product=> product.category === 'sc').length - 1)
+                                            { %>
+                                            <button class="next-product">Next</button>
+                                            <% } %>
                             </div>
                         </div>
                     </div>
-                <% }); %>
+                    <% }); %>
             </section>
-
             <section class="sections" id="sliced-cake">
-                <% products.filter(product => product.category === 'sc').forEach((product, index) => { %>
+                <% products.filter(product=> product.category === 'sc').forEach((product, index) => { %>
                     <div class="product">
                         <img src="<%= product.image_loc %>" alt="Product Image">
                         <div class="product-info">
-                            <h1><%= product.product_name %></h1>
-                            <p><%= product.product_description %></p>
-                            <p>Price: <%= product.price %></p>
+                            <h1>
+                                <%= product.product_name %>
+                            </h1>
+                            <p>
+                                <%= product.product_description %>
+                            </p>
+                            <p>Price: <%= product.price %>
+                            </p>
                             <button class="add-to-cart" data-product-id="<%= product.id %>">Add to Cart</button>
                             <div class="navigation-buttons">
-                                <% if (index > 0) { %>
+                                <% if (index> 0) { %>
                                     <button class="previous-product">Previous</button>
-                                <% } %>
-                                <% if (index < products.filter(product => product.category === 'sc').length - 1) { %>
-                                    <button class="next-product">Next</button>
-                                <% } %>
+                                    <% } %>
+                                        <% if (index < products.filter(product=> product.category === 'sc').length - 1)
+                                            { %>
+                                            <button class="next-product">Next</button>
+                                            <% } %>
                             </div>
                         </div>
                     </div>
-                <% }); %>
+                    <% }); %>
             </section>
 
             <section class="sections" id="cupcakes">
-                <% products.filter(product => product.category === 'cc').forEach((product, index) => { %>
+                <% products.filter(product=> product.category === 'cc').forEach((product, index) => { %>
                     <div class="product">
                         <img src="<%= product.image_loc %>" alt="Product Image">
                         <div class="product-info">
-                            <h1><%= product.product_name %></h1>
-                            <p><%= product.product_description %></p>
-                            <p>Price: <%= product.price %></p>
+                            <h1>
+                                <%= product.product_name %>
+                            </h1>
+                            <p>
+                                <%= product.product_description %>
+                            </p>
+                            <p>Price: <%= product.price %>
+                            </p>
                             <button class="add-to-cart" data-product-id="<%= product.id %>">Add to Cart</button>
                             <div class="navigation-buttons">
-                                <% if (index > 0) { %>
+                                <% if (index> 0) { %>
                                     <button class="previous-product">Previous</button>
-                                <% } %>
-                                <% if (index < products.filter(product => product.category === 'cc').length - 1) { %>
-                                    <button class="next-product">Next</button>
-                                <% } %>
+                                    <% } %>
+                                        <% if (index < products.filter(product=> product.category === 'sc').length - 1)
+                                            { %>
+                                            <button class="next-product">Next</button>
+                                            <% } %>
                             </div>
                         </div>
                     </div>
-                <% }); %>
+                    <% }); %>
             </section>
-
-            <section class="mobile-view" id="all-products">
-                <% products.forEach((product, index) => { %>
-                    <div class="product">
-                        <img src="<%= product.image_loc %>" alt="Product Image">
-                        <div class="product-info">
-                            <h1><%= product.product_name %></h1>
-                            <p><%= product.product_description %></p>
-                            <p>Price: <%= product.price %></p>
-                            <button class="add-to-cart" data-product-id="<%= product.id %>">Add to Cart</button>
-                        </div>
-                    </div>
-                <% }); %>
-            </section>
-        </div>  
-        <div class="cart-modal">
-            <div class="cart">
-                <% if (!loggedIn) { %>
-                    <div class="cart-content-not-logged-in">
-                        <p>Please login first to use the Cart</p>
-                        <button class="signinBtn" id="signInBtn">Sign In</button>
-                    </div>
-                <% } else { %>
-                    <p>Welcome, <%= username %>!</p>
-                    <h3 class="total-cost">Total Cost: ₱<span id="totalCostAmount">0.00</span></h3>
-                    <div class="cart-content">
-                        <ul></ul>
-                        <button class="checkoutBtn">Checkout</button>
-                    </div>
-                    <button class="close-modal" id="closeModalBtn">Close</button>
-                <% } %>
-            </div>
         </div>
 
+
+        <div class="cart">
+            <% if (!loggedIn) { %>
+                <div class="cart-content-not-logged-in">
+                    <p>Please login first to use the Cart</p>
+                    <button class="signinBtn" id="signInBtn">Sign In</button>
+                </div>
+                <% } else { %>
+                    <p>Welcome, <%= username %>!</p>
+                    <!--create total cost element -->
+                    <h3 class="total-cost">Total Cost: $<span id="totalCostAmount">0.00</span></h3>
+
+                    <div class="cart-content">
+                        <ul>
+
+                        </ul>
+                        <button class="checkoutBtn">Checkout</button>
+                    </div>
+                    <% } %>
+        </div>
     </div>
 
 </body>
