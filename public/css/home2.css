@@ -112,6 +112,7 @@ body {
 
 .about-section {
     padding: 2rem;
+    margin-block: 10rem;
     background-color: var(--secondary-color);
     color: var(--text-color);
     background-color: var(--bg-color);

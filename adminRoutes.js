@@ -43,12 +43,17 @@ router.post('/login',isAdmin, (req, res) => {
             // Set session variables to indicate that the admin is logged in
             req.session.loggedIn = true;
             req.session.username = username;
-            res.redirect('/dashboard');
+            res.redirect('/admin/dashboard');
         } else {
             res.redirect('/');
         }
     });
 });
+
+router.get('/dashboard', isAdmin, (req, res) => {
+    res.render('dashboard');
+}
+);
 
 
 module.exports = router;
