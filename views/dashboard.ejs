@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="/css/dashboard.css">
 </head>
+
 <body>
     <nav class="nav">
         <!-- logo   -->
@@ -14,9 +16,9 @@
         </div>
         <!-- links -->
         <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">Products</a>
-            <a href="#">Users</a>
+            <a href="#overview-section">Home</a>
+            <a href="#products-section">Products</a>
+            <a href="#users-section">Users</a>
             <a href="#">Feedbacks</a>
         </div>
         <!-- profile -->
@@ -24,5 +26,81 @@
             <h4>Profile</h4>
         </div>
     </nav>
+
+    <main>
+        <!-- <div class="overview" id="overview-section">
+
+        </div>
+        <div class="products" id="products-section">
+
+        </div>
+        users -->
+        <ul>
+        <div class="users" id="users-section">
+            <div class="users-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Select</th>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Password</th>
+                            <th>Contact Number</th>
+                            <th>Address</th>
+                            <th>Role</th>
+                            <th>Fullname</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.forEach(user => { %>
+                            <tr class="datas">
+                                <td><input type="checkbox" name="user-checkbox" value="<%= user.username %>"></td>
+                                <td><%= user.id %></td>
+                                <td><%= user.username %></td>
+                                <td><%= user.email %></td>
+                                <td><%= user.password %></td>
+                                <td><%= user.contact_number %></td>
+                                <td><%= user.address %></td>
+                                <td><%= user.role %></td>
+                                <td><%= user.fullname %></td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="users-buttons">
+                <button id="add-user">Add User</button>
+                <button id="edit-user">Edit User</button>
+                <button id="delete-user">Delete User</button>
+                <button id="refresh-list">Refresh List</button>
+            </div>
+        </div> 
+
+    </main>
+
 </body>
+<script>
+    // Select all checkboxes
+    const checkboxes = document.querySelectorAll('input[name="user-checkbox"]');
+
+    // Loop through each checkbox
+    checkboxes.forEach(checkbox => {
+        // Add event listener for 'change' event
+        checkbox.addEventListener('change', function() {
+            // Get parent row
+            const row = this.parentNode.parentNode;
+
+            // Check if checkbox is checked
+            if (this.checked) {
+                // Change background color of parent row
+                row.style.backgroundColor = 'your-color-here'; // Replace 'your-color-here' with the color you want
+            } else {
+                // Reset background color
+                row.style.backgroundColor = ''; // Or set it back to the original color
+            }
+        });
+    });
+</script>
 </html>

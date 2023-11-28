@@ -51,9 +51,17 @@ router.post('/login',isAdmin, (req, res) => {
 });
 
 router.get('/dashboard', isAdmin, (req, res) => {
-    res.render('dashboard');
-}
-);
+    const query = `SELECT * FROM users`;
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error(err);
+            res.sendStatus(500);
+            return;
+        }
+
+        res.render('dashboard', { users: results });
+    });
+});
 
 
 module.exports = router;
