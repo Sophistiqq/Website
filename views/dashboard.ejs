@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="/css/dashboard.css">
+    <script src="../scripts/admin-validate.js" defer></script>
+    <script nonce="<%= nonce %>">
+        // Your inline script here
+      </script>
 </head>
 
 <body>
@@ -35,72 +39,133 @@
 
         </div>
         users -->
-        <ul>
         <div class="users" id="users-section">
+            <div class="users-buttons">
+                <!-- Add User button -->
+                <button id="add-user">Add User</button>
+
+                <!-- Edit User button -->
+                <button id="edit-user">Edit User</button>
+
+                <!-- Delete User button -->
+                <button id="delete-user">Delete User</button>
+
+            </div>
             <div class="users-list">
-                <table>
+                <table class="users-table">
                     <thead>
                         <tr>
-                            <th>Select</th>
                             <th>ID</th>
+                            <th>Fullname</th>
                             <th>Username</th>
                             <th>Email</th>
                             <th>Password</th>
                             <th>Contact Number</th>
                             <th>Address</th>
                             <th>Role</th>
-                            <th>Fullname</th>
                         </tr>
                     </thead>
                     <tbody>
                         <% users.forEach(user => { %>
-                            <tr class="datas">
-                                <td><input type="checkbox" name="user-checkbox" value="<%= user.username %>"></td>
-                                <td><%= user.id %></td>
-                                <td><%= user.username %></td>
-                                <td><%= user.email %></td>
-                                <td><%= user.password %></td>
-                                <td><%= user.contact_number %></td>
-                                <td><%= user.address %></td>
-                                <td><%= user.role %></td>
-                                <td><%= user.fullname %></td>
+                            <tr class="user-row">
+                                <td class="user-id"><%= user.id %></td>
+                                <td class="user-fullname"><%= user.fullname %></td>
+                                <td class="user-username"><%= user.username %></td>
+                                <td class="user-email"><%= user.email %></td>
+                                <td class="user-password"><%= user.password %></td>
+                                <td class="user-contact-number"><%= user.contact_number %></td>
+                                <td class="user-address"><%= user.address %></td>
+                                <td class="user-role"><%= user.role %></td>
                             </tr>
                         <% }); %>
                     </tbody>
                 </table>
             </div>
-            
-            <div class="users-buttons">
-                <button id="add-user">Add User</button>
-                <button id="edit-user">Edit User</button>
-                <button id="delete-user">Delete User</button>
-                <button id="refresh-list">Refresh List</button>
-            </div>
-        </div> 
 
+            
+        </div>
+        
     </main>
+    <div class="add-user-modal">    
+        <form id="add-user-form" action="./admin-add" method="POST">
+            <h2>Add User</h2>
+            <div class="inputfield">
+                <label for="fullname">Full Name</label>
+                <input type="text" id="fullname" name="fullname" required>
+            </div>
+            <div class="inputfield">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="inputfield">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="inputfield">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="inputfield">
+                <label for="contact_number">Contact Number</label>
+                <input type="text" id="contact_number" name="contact_number" required>
+            </div>
+            <div class="inputfield">
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" required>
+            </div>
+            <div class="inputfield">
+                <label for="role">Role</label>
+                <select id="role" name="role" required>
+                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                </select>
+            </div>
+            <button type="submit">Add User</button>
+            <button class="close-button">Close</button>
+        </form>
+    </div>
+
+    <div class="edit-user-modal">
+        <form id="edit-user-form" action="./admin-edit" method="POST">
+            <h2>Edit User</h2>
+            <input type="hidden" id="edit-user-id" name="edit-user-id">
+            <div class="inputfield">
+                <label for="edit-fullname">Full Name</label>
+                <input type="text" id="edit-fullname" name="edit-fullname" required>
+            </div>
+            <div class="inputfield">
+                <label for="edit-username">Username</label>
+                <input type="text" id="edit-username" name="edit-username" required>
+            </div>
+            <div class="inputfield">
+                <label for="edit-email">Email</label>
+                <input type="email" id="edit-email" name="edit-email" required>
+            </div>
+            <div class="inputfield">
+                <label for="edit-password">Password</label>
+                <input type="password" id="edit-password" name="edit-password" required>
+            </div>
+            <div class="inputfield">
+                <label for="edit-contact_number">Contact Number</label>
+                <input type="text" id="edit-contact_number" name="edit-contact_number" required>
+            </div>
+            <div class="inputfield">
+                <label for="edit-address">Address</label>
+                <input type="text" id="edit-address" name="edit-address" required>
+            </div>
+            <div class="inputfield">
+                <label for="edit-role">Role</label>
+                <select id="edit-role" name="edit-role" required>
+                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                </select>
+            </div>
+            <button type="submit">Save Changes</button>
+            <button class="close-button" id="close-button-edit">Close</button>
+        </form>
+    </div>
 
 </body>
-<script>
-    // Select all checkboxes
-    const checkboxes = document.querySelectorAll('input[name="user-checkbox"]');
 
-    // Loop through each checkbox
-    checkboxes.forEach(checkbox => {
-        // Add event listener for 'change' event
-        checkbox.addEventListener('change', function() {
-            // Get parent row
-            const row = this.parentNode.parentNode;
-
-            // Check if checkbox is checked
-            if (this.checked) {
-                // Change background color of parent row
-                row.style.backgroundColor = 'your-color-here'; // Replace 'your-color-here' with the color you want
-            } else {
-                // Reset background color
-                row.style.backgroundColor = ''; // Or set it back to the original color
-            }
-        });
-    });
-</script>
+<script src="../scripts/dashboard.js" defer></script>
 </html>

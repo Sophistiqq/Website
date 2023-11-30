@@ -11,12 +11,20 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const mysql = require('mysql2');
 const MySQLStore = require('express-mysql-session')(session);
+const helmet = require('helmet');
 
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'"], // remove 'unsafe-inline' if not necessary
+        // other directives...
+    }
+}));
 // Create a connection to the MySQL database
 const db = mysql.createConnection({
     host: 'localhost',
@@ -148,6 +156,10 @@ app.get('/products', (req, res) => {
 
 
 
+
+
 // Admin routes
 const adminRoutes = require('./adminRoutes');
+const router = require('./adminRoutes');
 app.use('/admin', adminRoutes);
+
