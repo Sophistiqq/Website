@@ -27,23 +27,23 @@
                 <a href="/#about">About</a>
             </div>
             <% if (loggedIn) { %>
-                <% if (role === "admin") { %>
+                <% if (role==="admin" ) { %>
                     <div class="button-wrapper">
                         <button class="adminBtn cartBtn mobile-only">Open Cart</button>
                         <a href="/admin" class="adminBtn">Admin Panel</a>
                         <a href="/logout" class="logout" title="Log out"><img src="/images/logout.png" alt=""></a>
                     </div>
-                <% } else { %>
-                    <div class="button-wrapper">
-                        <a href="/profile" class="profileBtn">Profile</a>
-                        <a href="/logout" class="logout" title="Log out"><img src="/images/logout.png" alt=""></a>
-                    </div>
-                <% } %>
-                <% } else { %>
-                    <div class="button-wrapper">
-                        <button class="signinBtn" id="signInBtn">Sign In</button>
-                    </div>
-                <% } %>
+                    <% } else { %>
+                        <div class="button-wrapper">
+                            <a href="/profile" class="profileBtn">Profile</a>
+                            <a href="/logout" class="logout" title="Log out"><img src="/images/logout.png" alt=""></a>
+                        </div>
+                        <% } %>
+                            <% } else { %>
+                                <div class="button-wrapper">
+                                    <button class="signinBtn" id="signInBtn">Sign In</button>
+                                </div>
+                                <% } %>
         </nav>
 
     </header>
@@ -56,12 +56,14 @@
             <form action="/login" method="post" class="signin">
                 <h1>Sign In</h1>
                 <div class="inputfield">
-                    <label for="">Username</label>
-                    <input type="text" class="username" name="username" required>
+                    <label for="signin-username">Username</label>
+                    <input type="text" class="username" name="username" id="signin-username" required
+                        autocomplete="username" pattern="[a-zA-Z0-9]+" title="Only alphanumeric characters are allowed">
                 </div>
                 <div class="inputfield">
-                    <label for="">Password</label>
-                    <input type="password" class="password" name="password" required>
+                    <label for="signin-password">Password</label>
+                    <input type="password" class="password" name="password" id="signin-password" required
+                        autocomplete="current-password">
                 </div>
                 <button type="submit">Sign In</button>
             </form>
@@ -69,28 +71,31 @@
             <form action="/register" method="post" class="register hide">
                 <h1>Register</h1>
                 <div class="inputfield">
-                    <label for="">Name</label>
-                    <input type="text" name="fullname" required>
+                    <label for="register-fullname">Name</label>
+                    <input type="text" name="fullname" id="register-fullname" required autocomplete="name">
                 </div>
                 <div class="inputfield">
-                    <label for="">Username</label>
-                    <input type="text" name="username" required>
+                    <label for="register-username">Username</label>
+                    <input type="text" name="username" id="register-username" required autocomplete="username"
+                        pattern="[a-zA-Z0-9]+" title="Only alphanumeric characters are allowed">
                 </div>
                 <div class="inputfield">
-                    <label for="">Email</label>
-                    <input type="email" name="email" required>
+                    <label for="register-email">Email</label>
+                    <input type="email" name="email" id="register-email" required autocomplete="email">
                 </div>
                 <div class="inputfield">
-                    <label for="">Password</label>
-                    <input type="password" name="password" required>
+                    <label for="register-password">Password</label>
+                    <input type="password" name="password" id="register-password" required autocomplete="new-password"
+                        pattern=".{8,}" title="Password must be at least 8 characters long">
                 </div>
                 <div class="inputfield">
-                    <label for="">Contact Number</label>
-                    <input type="tel" name="contact_number" required>
+                    <label for="register-contact_number">Contact Number</label>
+                    <input type="tel" name="contact_number" id="register-contact_number" required autocomplete="tel"
+                        pattern="[0-9]+" title="Only numeric characters are allowed">
                 </div>
                 <div class="inputfield">
-                    <label for="">Address</label>
-                    <input type="text" name="address" required>
+                    <label for="register-address">Address</label>
+                    <input type="text" name="address" id="register-address" required autocomplete="street-address">
                 </div>
                 <button type="submit">Submit</button>
             </form>
@@ -111,86 +116,109 @@
 
         <div class="products">
             <section class="sections" id="mini-donuts">
-                <% products.filter(product => product.category === 'md').forEach((product, index) => { %>
+                <% products.filter(product=> product.category === 'md').forEach((product, index) => { %>
                     <div class="product">
                         <img src="<%= product.image_loc %>" alt="Product Image">
                         <div class="product-info">
-                            <h1><%= product.product_name %></h1>
-                            <p><%= product.product_description %></p>
-                            <p>Price: <%= product.price %></p>
+                            <h1>
+                                <%= product.product_name %>
+                            </h1>
+                            <p>
+                                <%= product.product_description %>
+                            </p>
+                            <p>Price: <%= product.price %>
+                            </p>
                             <button class="add-to-cart" data-product-id="<%= product.id %>">Add to Cart</button>
                             <div class="navigation-buttons">
-                                <% if (index > 0) { %>
+                                <% if (index> 0) { %>
                                     <button class="previous-product">Previous</button>
-                                <% } %>
-                                <% if (index < products.filter(product => product.category === 'md').length - 1) { %>
-                                    <button class="next-product">Next</button>
-                                <% } %>
+                                    <% } %>
+                                        <% if (index < products.filter(product=> product.category === 'md').length - 1)
+                                            { %>
+                                            <button class="next-product">Next</button>
+                                            <% } %>
                             </div>
                         </div>
                     </div>
-                <% }); %>
+                    <% }); %>
             </section>
 
             <section class="sections" id="sliced-cake">
-                <% products.filter(product => product.category === 'sc').forEach((product, index) => { %>
+                <% products.filter(product=> product.category === 'sc').forEach((product, index) => { %>
                     <div class="product">
                         <img src="<%= product.image_loc %>" alt="Product Image">
                         <div class="product-info">
-                            <h1><%= product.product_name %></h1>
-                            <p><%= product.product_description %></p>
-                            <p>Price: <%= product.price %></p>
+                            <h1>
+                                <%= product.product_name %>
+                            </h1>
+                            <p>
+                                <%= product.product_description %>
+                            </p>
+                            <p>Price: <%= product.price %>
+                            </p>
                             <button class="add-to-cart" data-product-id="<%= product.id %>">Add to Cart</button>
                             <div class="navigation-buttons">
-                                <% if (index > 0) { %>
+                                <% if (index> 0) { %>
                                     <button class="previous-product">Previous</button>
-                                <% } %>
-                                <% if (index < products.filter(product => product.category === 'sc').length - 1) { %>
-                                    <button class="next-product">Next</button>
-                                <% } %>
+                                    <% } %>
+                                        <% if (index < products.filter(product=> product.category === 'sc').length - 1)
+                                            { %>
+                                            <button class="next-product">Next</button>
+                                            <% } %>
                             </div>
                         </div>
                     </div>
-                <% }); %>
+                    <% }); %>
             </section>
 
             <section class="sections" id="cupcakes">
-                <% products.filter(product => product.category === 'cc').forEach((product, index) => { %>
+                <% products.filter(product=> product.category === 'cc').forEach((product, index) => { %>
                     <div class="product">
                         <img src="<%= product.image_loc %>" alt="Product Image">
                         <div class="product-info">
-                            <h1><%= product.product_name %></h1>
-                            <p><%= product.product_description %></p>
-                            <p>Price: <%= product.price %></p>
+                            <h1>
+                                <%= product.product_name %>
+                            </h1>
+                            <p>
+                                <%= product.product_description %>
+                            </p>
+                            <p>Price: <%= product.price %>
+                            </p>
                             <button class="add-to-cart" data-product-id="<%= product.id %>">Add to Cart</button>
                             <div class="navigation-buttons">
-                                <% if (index > 0) { %>
+                                <% if (index> 0) { %>
                                     <button class="previous-product">Previous</button>
-                                <% } %>
-                                <% if (index < products.filter(product => product.category === 'cc').length - 1) { %>
-                                    <button class="next-product">Next</button>
-                                <% } %>
+                                    <% } %>
+                                        <% if (index < products.filter(product=> product.category === 'cc').length - 1)
+                                            { %>
+                                            <button class="next-product">Next</button>
+                                            <% } %>
                             </div>
                         </div>
                     </div>
-                <% }); %>
+                    <% }); %>
             </section>
 
             <section class="mobile-view" id="all-products">
-                <% products.forEach((product, index) => { %>
+                <% products.forEach((product, index)=> { %>
                     <div class="product">
                         <img src="<%= product.image_loc %>" alt="Product Image">
                         <div class="product-info">
-                            <h1><%= product.product_name %></h1>
-                            <p><%= product.product_description %></p>
-                            <p>Price: <%= product.price %></p>
+                            <h1>
+                                <%= product.product_name %>
+                            </h1>
+                            <p>
+                                <%= product.product_description %>
+                            </p>
+                            <p>Price: <%= product.price %>
+                            </p>
                             <button class="add-to-cart" data-product-id="<%= product.id %>">Add to Cart</button>
                         </div>
                     </div>
-                <% }); %>
+                    <% }); %>
             </section>
-        </div>  
-        
+        </div>
+
         <div class="cart-modal">
             <div class="cart">
                 <% if (!loggedIn) { %>
@@ -198,15 +226,15 @@
                         <p>Please login first to use the Cart</p>
                         <button class="signinBtn" id="signInBtn">Sign In</button>
                     </div>
-                <% } else { %>
-                    <p>Welcome, <%= username %>!</p>
-                    <h3 class="total-cost">Total Cost: ₱<span id="totalCostAmount">0.00</span></h3>
-                    <div class="cart-content">
-                        <ul></ul>
-                        <button class="checkoutBtn">Checkout</button>
-                    </div>
-                    <button class="close-modal" id="closeModalBtn">Close</button>
-                <% } %>
+                    <% } else { %>
+                        <p>Welcome, <%= username %>!</p>
+                        <h3 class="total-cost">Total Cost: ₱<span id="totalCostAmount">0.00</span></h3>
+                        <div class="cart-content">
+                            <ul></ul>
+                            <button class="checkoutBtn">Checkout</button>
+                        </div>
+                        <button class="close-modal" id="closeModalBtn">Close</button>
+                        <% } %>
             </div>
         </div>
 
@@ -222,7 +250,7 @@
         totalCost = 0;
         Array.from(cart.children).forEach(item => {
             let itemPrice = item.querySelector('.item-price').innerText;
-            let itemPriceValue = parseFloat(itemPrice.replace(/[^0-9.-]+/g,""));
+            let itemPriceValue = parseFloat(itemPrice.replace(/[^0-9.-]+/g, ""));
             let quantity = parseInt(item.querySelector('.quantity').value);
             totalCost += itemPriceValue * quantity;
         });
@@ -236,7 +264,7 @@
             let productInfo = this.parentElement;
             let productName = productInfo.querySelector('h1').innerText;
             let productPrice = productInfo.children[2].innerText;
-            let productPriceValue = parseFloat(productPrice.replace(/[^0-9.-]+/g,""));
+            let productPriceValue = parseFloat(productPrice.replace(/[^0-9.-]+/g, ""));
 
             let existingCartItem = Array.from(cart.children).find(item => {
                 let itemName = item.querySelector('.item-name').innerText;

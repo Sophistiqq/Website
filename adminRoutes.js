@@ -61,18 +61,58 @@ router.post('/login', isAdmin, (req, res) => {
     });
 });
 
+const os = require('os');
+
+
+function calculateSystemUptime() {
+    const uptime = os.uptime();
+    const days = Math.floor(uptime / (24 * 60 * 60));
+    const hours = Math.floor((uptime % (24 * 60 * 60)) / (60 * 60));
+    const minutes = Math.floor((uptime % (60 * 60)) / 60);
+    const seconds = Math.floor(uptime % 60);
+
+    return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+}
+
+router.get('/uptime', (req, res) => {
+    res.send(calculateSystemUptime());
+});
+
 router.get('/dashboard', isAdmin, (req, res) => {
-    const query = `SELECT * FROM users`;
-    db.query(query, (err, results) => {
-        if (err) {
-            console.error(err);
+    const usersQuery = `SELECT * FROM users`;
+    const productsQuery = `SELECT * FROM products`;
+
+    db.query(usersQuery, (usersErr, usersResults) => {
+        if (usersErr) {
+            console.error(usersErr);
             res.sendStatus(500);
             return;
         }
 
-        res.render('dashboard', { users: results });
+        db.query(productsQuery, (productsErr, productsResults) => {
+            if (productsErr) {
+                console.error(productsErr);
+                res.sendStatus(500);
+                return;
+            }
+
+            const totalUsers = usersResults.length;
+            const totalProducts = productsResults.length;
+            const activeUsers = usersResults.filter(user => user.isActive).length;
+            const systemUptime = calculateSystemUptime();
+
+            res.render('dashboard', {
+                users: usersResults,
+                products: productsResults,
+                totalUsers: totalUsers,
+                totalProducts: totalProducts,
+                activeUsers: activeUsers,
+                systemUptime: systemUptime
+            });
+        });
     });
 });
+
 
 
 router.post('/admin-add', isAdmin, (req, res) => {
@@ -94,7 +134,7 @@ router.post('/admin-add', isAdmin, (req, res) => {
 // Route for editing a user
 router.post('/admin-edit', isAdmin, (req, res) => {
     console.log(req.body);
-    const { 'edit-user-id': userid, 'edit-fullname': fullname, 'edit-username': username, 'edit-email': email, 'edit-password': password, 'edit-contact_number': contact_number, 'edit-address': address, 'edit-role': role } = req.body;    
+    const { 'edit-user-id': userid, 'edit-fullname': fullname, 'edit-username': username, 'edit-email': email, 'edit-password': password, 'edit-contact_number': contact_number, 'edit-address': address, 'edit-role': role } = req.body;
     // Query to update the user in the database
     const query = `UPDATE users SET fullname = ?, username = ?, email = ?, password = ?, contact_number = ?, address = ?, role = ? WHERE id = ?`;
     db.query(query, [fullname, username, email, password, contact_number, address, role, userid], (err, results) => {
@@ -140,6 +180,24 @@ router.delete('/admin-delete', isAdmin, (req, res) => {
         });
     });
 });
+
+// Route for adding a product
+router.post('/admin-add-product', isAdmin, (req, res) => {
+    const { product_name, image_loc, category, qty_stocks, product_description, price } = req.body;
+
+    // Query to insert the product into the database
+    const query = `INSERT INTO products (product_name, image_loc, category, qty_stocks, product_description, price) VALUES (?, ?, ?, ?, ?, ?)`;
+    db.query(query, [product_name, image_loc, category, qty_stocks, product_description, price], (err, results) => {
+        if (err) {
+            console.error(err);
+            res.sendStatus(500);
+            return;
+        }
+
+        res.redirect('/admin/dashboard');
+    });
+});
+
 
 
 module.exports = router;

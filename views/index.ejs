@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BreadBites: Home</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
     <link rel="stylesheet" href="./css/home.css">
     <link rel="stylesheet" href="./css/home2.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.3/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.3/ScrollTrigger.min.js"></script>
     <script src="./scripts/home.js" defer></script>
-    <script src="./scripts/validation.js" defer></script>
-    <script src="./scripts/scroll.js" defer></script>
+    <script src="./scripts/validation.js"></script>
+    <script src="./scripts/scroll.js" type="module"></script>
 </head>
 
 <body>
@@ -31,27 +31,27 @@
                 <a href="#about">About</a>
             </div>
             <% if (loggedIn) { %>
-                <% if (role === "admin") { %>
+                <% if (role==="admin" ) { %>
                     <div class="button-wrapper">
                         <a href="/admin" class="adminBtn">Admin Panel</a>
                         <a href="/logout" class="logout" title="Log out"><img src="/images/logout.png" alt=""></a>
                     </div>
-                <% } else { %>
-                    <div class="button-wrapper">
-                        <a href="/profile" class="profileBtn">Profile</a>
-                        <a href="/logout" class="logout" title="Log out"><img src="/images/logout.png" alt=""></a>
-                    </div>
-                <% } %>
-                <% } else { %>
-                    <div class="button-wrapper">
-                        <button class="signinBtn" id="signInBtn">Sign In</button>
-                    </div>
-                <% } %>
+                    <% } else { %>
+                        <div class="button-wrapper">
+                            <a href="/profile" class="profileBtn">Profile</a>
+                            <a href="/logout" class="logout" title="Log out"><img src="/images/logout.png" alt=""></a>
+                        </div>
+                        <% } %>
+                            <% } else { %>
+                                <div class="button-wrapper">
+                                    <button class="signinBtn" id="signInBtn">Sign In</button>
+                                </div>
+                                <% } %>
         </nav>
     </header>
 
 
-    <main >
+    <main>
         <div class="main">
             <div class="hero-section">
                 <div>
@@ -71,8 +71,10 @@
                 <!-- button links -->
                 <div class="contact-links">
                     <!-- facebook, messenger, twitter, gmail -->
-                    <a target="_blank" href="https://www.facebook.com/"><img src="/images/facebook.png" alt="facebook"></a>
-                    <a target="_blank" href="https://www.messenger.com/"><img src="/images/messenger.png" alt="messenger"></a>
+                    <a target="_blank" href="https://www.facebook.com/"><img src="/images/facebook.png"
+                            alt="facebook"></a>
+                    <a target="_blank" href="https://www.messenger.com/"><img src="/images/messenger.png"
+                            alt="messenger"></a>
                     <a target="_blank" href="https://twitter.com/"><img src="/images/twitter.png" alt="twitter"></a>
                     <a target="_blank" href="https://mail.google.com/"><img src="/images/gmail.png" alt="gmail"></a>
                 </div>
@@ -80,7 +82,8 @@
         </div>
 
         <div class="right">
-            <a href="/products" class="donut"><img src="/images/Donut-removebg-preview 1.png" alt="Donut" id="donutmalaki"></a>
+            <a href="/products" class="donut"><img src="/images/Donut-removebg-preview 1.png" alt="Donut"
+                    id="donutmalaki"></a>
             <div class="arrow">
                 <h3>Click here to see our Donuts</h3>
                 <img src="/images/arrow.png" alt="">
@@ -93,12 +96,14 @@
                 <form action="/login" method="post" class="signin">
                     <h1>Sign In</h1>
                     <div class="inputfield">
-                        <label for="">Username</label>
-                        <input type="text" class="username" name="username" required>
+                        <label for="signin-username">Username</label>
+                        <input type="text" class="username" name="username" id="signin-username" required
+                            autocomplete="username" pattern="[a-zA-Z0-9]+" title="Only alphanumeric characters are allowed">
                     </div>
                     <div class="inputfield">
-                        <label for="">Password</label>
-                        <input type="password" class="password" name="password" required>
+                        <label for="signin-password">Password</label>
+                        <input type="password" class="password" name="password" id="signin-password" required
+                            autocomplete="current-password">
                     </div>
                     <button type="submit">Sign In</button>
                 </form>
@@ -106,28 +111,31 @@
                 <form action="/register" method="post" class="register hide">
                     <h1>Register</h1>
                     <div class="inputfield">
-                        <label for="">Name</label>
-                        <input type="text" name="fullname" required>
+                        <label for="register-fullname">Name</label>
+                        <input type="text" name="fullname" id="register-fullname" required autocomplete="name">
                     </div>
                     <div class="inputfield">
-                        <label for="">Username</label>
-                        <input type="text" name="username" required>
+                        <label for="register-username">Username</label>
+                        <input type="text" name="username" id="register-username" required autocomplete="username"
+                            pattern="[a-zA-Z0-9]+" title="Only alphanumeric characters are allowed">
                     </div>
                     <div class="inputfield">
-                        <label for="">Email</label>
-                        <input type="email" name="email" required>
+                        <label for="register-email">Email</label>
+                        <input type="email" name="email" id="register-email" required autocomplete="email">
                     </div>
                     <div class="inputfield">
-                        <label for="">Password</label>
-                        <input type="password" name="password" required>
+                        <label for="register-password">Password</label>
+                        <input type="password" name="password" id="register-password" required
+                            autocomplete="new-password" pattern=".{8,}" title="Password must be at least 8 characters long">
                     </div>
                     <div class="inputfield">
-                        <label for="">Contact Number</label>
-                        <input type="tel" name="contact_number" required>
+                        <label for="register-contact_number">Contact Number</label>
+                        <input type="tel" name="contact_number" id="register-contact_number" required
+                            autocomplete="tel" pattern="[0-9]+" title="Only numeric characters are allowed">
                     </div>
                     <div class="inputfield">
-                        <label for="">Address</label>
-                        <input type="text" name="address" required>
+                        <label for="register-address">Address</label>
+                        <input type="text" name="address" id="register-address" required autocomplete="street-address">
                     </div>
                     <button type="submit">Submit</button>
                 </form>
@@ -193,6 +201,5 @@
     <footer></footer>
     <img src="/images/bread 1.png" alt="" class="logo-footer">
 </body>
-
 
 </html>

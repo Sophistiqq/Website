@@ -9,7 +9,7 @@
     <script src="../scripts/admin-validate.js" defer></script>
     <script nonce="<%= nonce %>">
         // Your inline script here
-      </script>
+    </script>
 </head>
 
 <body>
@@ -20,7 +20,7 @@
         </div>
         <!-- links -->
         <div class="nav-links">
-            <a href="#overview-section">Home</a>
+            <a href="#overview-section">Overview</a>
             <a href="#products-section">Products</a>
             <a href="#users-section">Users</a>
             <a href="#">Feedbacks</a>
@@ -32,15 +32,81 @@
     </nav>
 
     <main>
-        <!-- <div class="overview" id="overview-section">
-
+        <div class="overview" id="overview-section">
+            <h1>System Overview</h1>
+            <div class="overview-content">
+                <div class="overview-item">
+                    <h2>Total Users</h2>
+                    <p><%= totalUsers %></p>
+                </div>
+                <div class="overview-item">
+                    <h2>Total Products</h2>
+                    <p><%= totalProducts %></p>
+                </div>
+                <div class="overview-item">
+                    <h2>Active Users</h2>
+                    <p><%= activeUsers %></p>
+                </div>
+                <div class="overview-item">
+                    <h2>System Uptime</h2>
+                    <p id="systemUptime"><%= systemUptime %></p>
+                </div>
+            </div>
         </div>
+
+
         <div class="products" id="products-section">
+            <h1>Products Section</h1>
+            <div class="product-controls">
+                <!-- Add Product button -->
+                <button id="add-product">Add</button>
 
+                <!-- Edit Product button -->
+                <button id="edit-product">Edit</button>
+
+                <!-- Delete Product button -->
+                <button id="delete-product">Delete</button>
+            </div>
+            <table class="products-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% products.forEach(product => { %>
+                    <tr class="product-row">
+                        <td data-th="ID"><%= product.product_id %></td>
+                        <td data-th="Name"><%= product.product_name %></td>
+                        <td data-th="Price"><%= product.price %></td>
+                        <td data-th="Category">
+                            <% if (product.category === 'sc') { %>
+                                Slice Cake
+                            <% } else if (product.category === 'cc') { %>
+                                Cupcake
+                            <% } else if (product.category === 'md') { %>
+                                Mini-Donut
+                            <% } %>
+                        </td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
         </div>
-        users -->
+
+
+
+
+
+
+
+        <!-- users  -->
         <div class="users" id="users-section">
-            <div class="users-buttons">
+            <h1>Users Section</h1>
+            <div class="user-controls">
                 <!-- Add User button -->
                 <button id="add-user">Add User</button>
 
@@ -49,39 +115,36 @@
 
                 <!-- Delete User button -->
                 <button id="delete-user">Delete User</button>
-
             </div>
-            <div class="users-list">
-                <table class="users-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Fullname</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Password</th>
-                            <th>Contact Number</th>
-                            <th>Address</th>
-                            <th>Role</th>
+            <table class="users-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fullname</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Contact Number</th>
+                        <th>Address</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% users.forEach(user => { %>
+                        <tr class="user-row">
+                            <td class="user-id"><%= user.id %></td>
+                            <td class="user-fullname"><%= user.fullname %></td>
+                            <td class="user-username"><%= user.username %></td>
+                            <td class="user-email"><%= user.email %></td>
+                            <td class="user-password"><%= user.password %></td>
+                            <td class="user-contact-number"><%= user.contact_number %></td>
+                            <td class="user-address"><%= user.address %></td>
+                            <td class="user-role"><%= user.role %></td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <% users.forEach(user => { %>
-                            <tr class="user-row">
-                                <td class="user-id"><%= user.id %></td>
-                                <td class="user-fullname"><%= user.fullname %></td>
-                                <td class="user-username"><%= user.username %></td>
-                                <td class="user-email"><%= user.email %></td>
-                                <td class="user-password"><%= user.password %></td>
-                                <td class="user-contact-number"><%= user.contact_number %></td>
-                                <td class="user-address"><%= user.address %></td>
-                                <td class="user-role"><%= user.role %></td>
-                            </tr>
-                        <% }); %>
-                    </tbody>
-                </table>
-            </div>
-
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
             
         </div>
         

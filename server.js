@@ -18,13 +18,19 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 
-app.use(helmet.contentSecurityPolicy({
-    directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'"], // remove 'unsafe-inline' if not necessary
-        // other directives...
-    }
-}));
+
+// Configure Content Security Policy
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+        },
+    })
+);
+
+
 // Create a connection to the MySQL database
 const db = mysql.createConnection({
     host: 'localhost',
@@ -109,7 +115,7 @@ app.post('/register', (req, res) => {
     const address = req.body.address;
     const fullname = req.body.fullname;
     const role = 'user'; // Set the role to "user"
-    
+
     // Query to check if the username or email already exists in the database
     const checkUserQuery = `SELECT * FROM users WHERE username = ? OR email = ?`;
     db.query(checkUserQuery, [username, email], (err, results) => {
@@ -149,7 +155,7 @@ app.get('/products', (req, res) => {
             res.sendStatus(500);
             return;
         }
-        
+
         res.render('products', { products: results, loggedIn: req.session.loggedIn, role: req.session.role, username: req.session.username });
     });
 });

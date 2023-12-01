@@ -111,3 +111,10 @@ function deleteUser() {
 }
 
 
+setInterval(() => {
+    fetch('./uptime')
+        .then(response => response.text())
+        .then(uptime => {
+            document.getElementById('systemUptime').textContent = uptime;
+        });
+}, 1000);
