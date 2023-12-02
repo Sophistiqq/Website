@@ -14,7 +14,7 @@ router.use((req, res, next) => {
 });
 // Create a connection to the MySQL database
 const db = mysql.createConnection({
-    uri: 'mysql://avnadmin:AVNS__I1qTDQJdXjTU4WAgRX@breadbites-breadbites.a.aivencloud.com:10293/defaultdb?ssl-mode=REQUIRED',
+    uri: 'mysql://avnadmin:AVNS__I1qTDQJdXjTU4WAgRX@breadbites-breadbites.a.aivencloud.com:10293/breadbites?ssl-mode=REQUIRED',
     // host: 'breadbites-breadbites.a.aivencloud.com',
     // user: 'avnadmin',
     // password: 'AVNS__I1qTDQJdXjTU4WAgRX',
