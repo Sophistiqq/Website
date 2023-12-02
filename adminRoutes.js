@@ -14,9 +14,9 @@ router.use((req, res, next) => {
 });
 // Create a connection to the MySQL database
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '091534',
+    host: 'sql.000webhost.com',
+    user: 'id21608345_breadbites',
+    password: 'Roi09153445041...',
     database: 'breadbites'
 });
 
