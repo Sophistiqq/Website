@@ -70,3 +70,27 @@ document.getElementById('closeModalBtn').addEventListener('click', function() {
 document.querySelector('.cartBtn').addEventListener('click', function() {
     document.querySelector('.cart-modal').style.display = 'flex';
 });
+
+
+
+
+
+document.getElementById('checkout-form').addEventListener('submit', function(e) {
+    // Prevent the form from submitting normally
+    e.preventDefault();
+
+    // Get the products from the cart
+    var products = getProductsFromCart(); // You'll need to implement this function
+
+    // Add a hidden input field for each product
+    products.forEach(function(product) {
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'products[]';
+        input.value = JSON.stringify(product);
+        this.appendChild(input);
+    }, this);
+
+    // Submit the form
+    this.submit();
+});

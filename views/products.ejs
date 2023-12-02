@@ -8,7 +8,10 @@
     <!-- use css from public folder -->
     <link rel="stylesheet" href="./css/products-page.css">
     <link rel="stylesheet" href="./css/products-page-phone.css">
+    <link rel="stylesheet" href="./css/checkoutpopup.css">
     <script src="./scripts/products.js" defer></script>
+
+    
 </head>
 
 <body>
@@ -235,13 +238,78 @@
                         </div>
                         <button class="close-modal" id="closeModalBtn">Close</button>
                         <% } %>
+
+
             </div>
         </div>
 
     </div>
 
+    <div class="checkout-form-container">
+        <form id="checkout-form" action="/checkout" method="POST">
+            <div class="checkout-container">
+                <h1>Check your Orders</h1>
+                <div class="checkout-cart">
+                    <h2 class="checkout-heading">Your Cart</h2>
+                    <table id="checkout-cart-items" class="cart-items">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Cart items should be dynamically added here  -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="delivery-options">
+                    <h2 class="checkout-heading">Delivery Options</h2>
+                    <div class="delivery-date">
+                        <label for="delivery-date">Choose a delivery date:</label>
+                        <input type="date" id="delivery-date" name="deliveryDate">
+                    </div>
+                    <div class="delivery-time">
+                        <label for="delivery-time">Choose a delivery time:</label>
+                        <input type="time" id="delivery-time" name="deliveryTime">
+                    </div>
+                </div>
+                <div class="checkout-total">
+                    <h2 class="checkout-heading">Total Price: ₱<span id="checkout-total-price">0.00</span></h2>
+                    <div class="checkout-buttons">
+                        <button id="checkout-cancel" type="button">Cancel</button>
+                        <button type="submit" id="checkout-confirm">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+<script>
+    var userId = "<%- JSON.stringify(id) %>";
+</script>
 </body>
 <script>
+    let checkoutButton = document.querySelector('.checkoutBtn');
+    let checkoutFormContainer = document.querySelector('.checkout-form-container');
+    let cancelButton = document.querySelector('#checkout-cancel');
+
+    checkoutButton.addEventListener('click', function () {
+        // Toggle the checkout form container
+        checkoutFormContainer.classList.toggle('show');
+    });
+
+    cancelButton.addEventListener('click', function () {
+        // Hide the checkout form container
+        checkoutFormContainer.classList.remove('show');
+    });
+
+
+
+
     let addToCartButtons = document.querySelectorAll('.add-to-cart');
     let cart = document.querySelector('.cart-content ul');
     let totalCost = 0;
@@ -254,9 +322,10 @@
             let quantity = parseInt(item.querySelector('.quantity').value);
             totalCost += itemPriceValue * quantity;
         });
-
+        let checkoutTotalElement = document.querySelector('#checkout-total-price');
         let totalCostElement = document.querySelector('#totalCostAmount');
         totalCostElement.innerText = totalCost.toFixed(2);
+        checkoutTotalElement.innerText = totalCost.toFixed(2);
     }
 
     addToCartButtons.forEach(button => {
@@ -316,5 +385,6 @@
         updateTotalCost();
     });
 </script>
+<script src="./scripts/checkout.js"></script>
 
 </html>

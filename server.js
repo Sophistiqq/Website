@@ -88,6 +88,7 @@ app.post('/login', (req, res) => {
             // Set session variables to indicate that the user is logged in
             req.session.loggedIn = true;
             req.session.username = username;
+            req.session.userId = results[0].id; // Store user ID in session
             const role = results[0].role; // Get the role from the database results
             req.session.role = role; // Set the role in the session variables
             if (role === 'admin') {
@@ -158,7 +159,7 @@ app.get('/products', (req, res) => {
             return;
         }
 
-        res.render('products', { products: results, loggedIn: req.session.loggedIn, role: req.session.role, username: req.session.username });
+        res.render('products', { products: results, loggedIn: req.session.loggedIn, role: req.session.role, username: req.session.username, id: req.session.userId});
     });
 });
 
@@ -171,3 +172,38 @@ const adminRoutes = require('./adminRoutes');
 const router = require('./adminRoutes');
 app.use('/admin', adminRoutes);
 
+
+
+
+
+// Server-side JavaScript
+app.post('/checkout', (req, res) => {
+    let order = req.body;
+    db.query('INSERT INTO orders (user_id, delivery_date, delivery_time) VALUES (?, ?, ?)', [order.userId, order.deliveryDate, order.deliveryTime], (err, result) => {
+        if (err) {
+            console.error(err);
+            res.sendStatus(500);
+            return;
+        }
+        let orderId = result.insertId;
+        let productOrders = order.productOrders;
+        productOrders.forEach(productOrder => {
+            db.query('SELECT product_id FROM products WHERE product_name = ?', [productOrder.productName], (err, result) => {
+                if (err) {
+                    console.error(err);
+                    res.sendStatus(500);
+                    return;
+                }
+                let productId = result[0].product_id;
+                db.query('INSERT INTO order_items (order_id, product_id, price, quantity) VALUES (?, ?, ?, ?)', [orderId, productId, productOrder.price, productOrder.quantity], err => {
+                    if (err) {
+                        console.error(err);
+                        res.sendStatus(500);
+                        return;
+                    }
+                });
+            });
+        });
+        res.sendStatus(200);
+    });
+});
