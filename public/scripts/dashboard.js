@@ -100,7 +100,7 @@ function deleteUser() {
         .then(response => response.json())
         .then(data => {
             console.log(data);
-            location.reload(); // Refresh the page
+            location.reload(); // Reload the page after deletion
         })
         .catch((error) => {
             console.error('Error:', error);
@@ -110,11 +110,6 @@ function deleteUser() {
     }
 }
 
-
-
-
-
-
 setInterval(() => {
     fetch('./uptime')
         .then(response => response.text())
@@ -122,6 +117,7 @@ setInterval(() => {
             document.getElementById('systemUptime').textContent = uptime;
         });
 }, 1000);
+
 
 
 
@@ -148,27 +144,18 @@ productRows.forEach(function(row) {
 
 
 
-// Select the delete button
 var deleteProductButton = document.querySelector('#delete-product');
-
-// Add event listener to the delete button
 deleteProductButton.addEventListener('click', deleteProduct);
 
 function deleteProduct() {
-    // Find the highlighted product row
     var highlightedRow = document.querySelector('.product-row.highlight');
-
-    // If no row is highlighted, do nothing
     if (!highlightedRow) return;
 
-    // Extract the product ID from the highlighted row
     var productId = highlightedRow.querySelector('td[data-th="ID"]').textContent;
+    var productName = highlightedRow.querySelector('td[data-th="Name"]').textContent;
 
-    // Confirm the deletion with the user
-    var confirmation = confirm('Are you sure you want to delete this product?');
-
-    // If the user confirmed, send a DELETE request to the server
-    if (confirmation) {
+    var confirmation = prompt('Please enter the product name "' + productName + '" to confirm deletion:');
+    if (confirmation === productName) {
         fetch('./admin-delete-product', {
             method: 'DELETE',
             headers: {
@@ -179,13 +166,16 @@ function deleteProduct() {
         .then(response => response.json())
         .then(data => {
             console.log(data);
-            location.reload(); // Refresh the page
+            location.reload(); // Reload the page after deletion
         })
         .catch((error) => {
             console.error('Error:', error);
         });
+    } else {
+        alert('Product name does not match. Deletion canceled.');
     }
 }
+
 
 
 // Select the add product button

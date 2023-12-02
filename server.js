@@ -33,12 +33,11 @@ app.use(
 
 // Create a connection to the MySQL database
 const db = mysql.createConnection({
-    uri: 'mysql://avnadmin:AVNS__I1qTDQJdXjTU4WAgRX@breadbites-breadbites.a.aivencloud.com:10293/breadbites?ssl-mode=REQUIRED',
-    // host: 'breadbites-breadbites.a.aivencloud.com',
-    // user: 'avnadmin',
-    // password: 'AVNS__I1qTDQJdXjTU4WAgRX',
-    // database: 'defaultdb',
-    // port: '10293',
+    // uri: 'mysql://avnadmin:AVNS__I1qTDQJdXjTU4WAgRX@breadbites-breadbites.a.aivencloud.com:10293/breadbites?ssl-mode=REQUIRED',
+    host: 'localhost',
+    user: 'root',
+    password: '091534',
+    database: 'breadbites',
 });
 
 

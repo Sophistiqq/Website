@@ -14,12 +14,11 @@ router.use((req, res, next) => {
 });
 // Create a connection to the MySQL database
 const db = mysql.createConnection({
-    uri: 'mysql://avnadmin:AVNS__I1qTDQJdXjTU4WAgRX@breadbites-breadbites.a.aivencloud.com:10293/breadbites?ssl-mode=REQUIRED',
-    // host: 'breadbites-breadbites.a.aivencloud.com',
-    // user: 'avnadmin',
-    // password: 'AVNS__I1qTDQJdXjTU4WAgRX',
-    // database: 'defaultdb',
-    // port: '10293'
+    // uri: 'mysql://avnadmin:AVNS__I1qTDQJdXjTU4WAgRX@breadbites-breadbites.a.aivencloud.com:10293/breadbites?ssl-mode=REQUIRED',
+    host: 'localhost',
+    user: 'root',
+    password: '091534',
+    database: 'breadbites',
 });
 
 // Middleware to check if the user is an admin
@@ -81,7 +80,7 @@ router.get('/uptime', (req, res) => {
 });
 
 router.get('/dashboard', isAdmin, (req, res) => {
-    const usersQuery = `SELECT * FROM users`;
+    const usersQuery = `SELECT * FROM users WHERE username != 'admin' AND id != 1`;
     const productsQuery = `SELECT * FROM products`;
 
     db.query(usersQuery, (usersErr, usersResults) => {
@@ -129,7 +128,7 @@ router.post('/admin-add', isAdmin, (req, res) => {
             return;
         }
 
-        res.redirect('admin/dashboard#users-section');
+        res.redirect('/admin/dashboard#users-section');
     });
 });
 
@@ -147,12 +146,12 @@ router.post('/admin-edit', isAdmin, (req, res) => {
             return;
         }
 
-        res.redirect('admin/dashboard#users-section');
+        res.redirect('/admin/dashboard#users-section');
     });
 });
 
 router.delete('/admin-delete', isAdmin, (req, res) => {
-    const userId = req.body.userId;
+    const { userId } = req.body;
 
     // Query to get the username of the user
     const userQuery = `SELECT username FROM users WHERE id = ?`;
@@ -177,9 +176,7 @@ router.delete('/admin-delete', isAdmin, (req, res) => {
                 res.sendStatus(500);
                 return;
             }
-
-            res.redirect('admin/dashboard#users-section');
-           
+            res.json({ message: 'User deleted successfully.' });
         });
     });
 });
@@ -213,7 +210,7 @@ router.post('/admin-add-product', isAdmin, upload.single('image_loc'), (req, res
 
 
 router.delete('/admin-delete-product', isAdmin, (req, res) => {
-    const productId = req.body.productId;
+    const { productId } = req.body;
 
     // Query to delete the product from the database
     const deleteQuery = `DELETE FROM products WHERE product_id = ?`;
@@ -224,9 +221,11 @@ router.delete('/admin-delete-product', isAdmin, (req, res) => {
             return;
         }
 
-        res.redirect('/admin/dashboard#products-section');
+        res.json({ message: 'Product deleted successfully' });
     });
 });
+
+
 // Route for editing a product
 router.post('/admin-edit-product', isAdmin, (req, res) => {
     const { 'edit-product-id': productId, 'edit-product_name': productName, 'edit-category': category, 'edit-qtystocks': qtyStocks, 'edit-product_description': productDescription, 'edit-price': price } = req.body;
