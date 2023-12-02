@@ -127,13 +127,13 @@ router.post('/admin-add', isAdmin, (req, res) => {
             return;
         }
 
-        res.redirect('/admin/dashboard');
+        res.redirect('admin/dashboard#users-section');
     });
 });
 
 // Route for editing a user
 router.post('/admin-edit', isAdmin, (req, res) => {
-    console.log(req.body);
+    
     const { 'edit-user-id': userid, 'edit-fullname': fullname, 'edit-username': username, 'edit-email': email, 'edit-password': password, 'edit-contact_number': contact_number, 'edit-address': address, 'edit-role': role } = req.body;
     // Query to update the user in the database
     const query = `UPDATE users SET fullname = ?, username = ?, email = ?, password = ?, contact_number = ?, address = ?, role = ? WHERE id = ?`;
@@ -145,7 +145,7 @@ router.post('/admin-edit', isAdmin, (req, res) => {
             return;
         }
 
-        res.redirect('/admin/dashboard');
+        res.redirect('admin/dashboard#users-section');
     });
 });
 
@@ -176,25 +176,53 @@ router.delete('/admin-delete', isAdmin, (req, res) => {
                 return;
             }
 
-            res.json({ message: 'User deleted successfully' });
+            res.redirect('admin/dashboard#users-section');
+           
         });
     });
 });
 
-// Route for adding a product
-router.post('/admin-add-product', isAdmin, (req, res) => {
-    const { product_name, image_loc, category, qty_stocks, product_description, price } = req.body;
+const multer = require('multer');
+const path = require('path');
 
-    // Query to insert the product into the database
-    const query = `INSERT INTO products (product_name, image_loc, category, qty_stocks, product_description, price) VALUES (?, ?, ?, ?, ?, ?)`;
-    db.query(query, [product_name, image_loc, category, qty_stocks, product_description, price], (err, results) => {
+const storage = multer.diskStorage({
+    destination: path.join(__dirname, 'public/images/PRODUCTS'),
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    }
+});
+
+const upload = multer({ storage: storage });
+
+router.post('/admin-add-product', isAdmin, upload.single('image_loc'), (req, res) => {
+    const { product_name, category, qty_stocks, product_description, price } = req.body;
+    const filename = path.basename(req.file.path);
+    const image_loc = '/images/PRODUCTS/' + filename;
+    // Query to insert the new product into the database
+    const insertQuery = `INSERT INTO products (product_name, image_loc, category, qty_stocks, product_description, price) VALUES (?, ?, ?, ?, ?, ?)`;
+    db.query(insertQuery, [product_name, image_loc, category, qty_stocks, product_description, price], (err, results) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        res.redirect('/admin/dashboard#products-section');
+    });
+});
+
+
+router.delete('/admin-delete-product', isAdmin, (req, res) => {
+    const productId = req.body.productId;
+
+    // Query to delete the product from the database
+    const deleteQuery = `DELETE FROM products WHERE product_id = ?`;
+    db.query(deleteQuery, [productId], (err, results) => {
         if (err) {
             console.error(err);
             res.sendStatus(500);
             return;
         }
 
-        res.redirect('/admin/dashboard');
+        res.redirect('/admin/dashboard#products-section');
     });
 });
 

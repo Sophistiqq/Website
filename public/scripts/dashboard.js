@@ -111,6 +111,10 @@ function deleteUser() {
 }
 
 
+
+
+
+
 setInterval(() => {
     fetch('./uptime')
         .then(response => response.text())
@@ -118,3 +122,140 @@ setInterval(() => {
             document.getElementById('systemUptime').textContent = uptime;
         });
 }, 1000);
+
+
+
+
+// Function to highlight a product row
+function highlightProductRow(event) {
+    // Remove highlight from previously highlighted row
+    var highlightedRow = document.querySelector('.product-row.highlight');
+    if (highlightedRow) {
+        highlightedRow.classList.remove('highlight');
+    }
+
+    // Add highlight to the clicked row
+    var clickedRow = event.target.closest('.product-row');
+    clickedRow.classList.add('highlight');
+}
+
+// Add event listener to each product row
+var productRows = document.querySelectorAll('.product-row');
+productRows.forEach(function(row) {
+    row.addEventListener('click', highlightProductRow);
+});
+
+
+
+
+// Select the delete button
+var deleteProductButton = document.querySelector('#delete-product');
+
+// Add event listener to the delete button
+deleteProductButton.addEventListener('click', deleteProduct);
+
+function deleteProduct() {
+    // Find the highlighted product row
+    var highlightedRow = document.querySelector('.product-row.highlight');
+
+    // If no row is highlighted, do nothing
+    if (!highlightedRow) return;
+
+    // Extract the product ID from the highlighted row
+    var productId = highlightedRow.querySelector('td[data-th="ID"]').textContent;
+
+    // Confirm the deletion with the user
+    var confirmation = confirm('Are you sure you want to delete this product?');
+
+    // If the user confirmed, send a DELETE request to the server
+    if (confirmation) {
+        fetch('./admin-delete-product', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ productId: productId }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            location.reload(); // Refresh the page
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+}
+
+
+// Select the add product button
+var addProductButton = document.querySelector('#add-product');
+
+// Add event listener to the add product button
+addProductButton.addEventListener('click', openAddProductModal);
+
+function openAddProductModal() {
+    // Select the add product modal
+    var addProductModal = document.querySelector('.add-product-modal');
+
+    // Show the add product modal
+    addProductModal.classList.add('show');
+}
+
+// Select the close button in the add product modal
+var closeAddProductButton = document.querySelector('.add-product-modal .close-button');
+
+// Add event listener to the close button in the add product modal
+closeAddProductButton.addEventListener('click', closeAddProductModal);
+
+function closeAddProductModal() {
+    // Select the add product modal
+    var addProductModal = document.querySelector('.add-product-modal');
+
+    // Hide the add product modal
+    addProductModal.classList.remove('show');
+}
+
+// Select the edit product button
+var editProductButton = document.querySelector('#edit-product');
+
+
+// Add event listener to the edit product button
+editProductButton.addEventListener('click', openEditProductModal);
+
+function openEditProductModal() {
+    // Select the edit product modal
+    var editProductModal = document.querySelector('.edit-product-modal');
+
+    // Find the highlighted product row
+    var highlightedRow = document.querySelector('.product-row.highlight');
+
+    // If no row is highlighted, do nothing
+    if (!highlightedRow) return;
+
+    // Populate the edit product modal with the product data
+    var inputs = document.querySelectorAll('.edit-product-modal input, .edit-product-modal select');
+    inputs[0].value = highlightedRow.querySelector('td[data-th="ID"]').textContent;
+    inputs[1].value = highlightedRow.querySelector('td[data-th="Name"]').textContent;
+    inputs[2].value = highlightedRow.querySelector('td[data-th="Price"]').textContent;
+    inputs[3].value = highlightedRow.querySelector('td[data-th="Category"]').textContent;
+
+    // Show the edit product modal
+    editProductModal.classList.add('show');
+}
+
+// Select the close button in the edit product modal
+var closeEditProductButton = document.querySelector('.edit-product-modal .close-button');
+
+// Add event listener to the close button in the edit product modal
+closeEditProductButton.addEventListener('click', closeEditProductModal);
+
+function closeEditProductModal() {
+    // Select the edit product modal
+    var editProductModal = document.querySelector('.edit-product-modal');
+
+    // Hide the edit product modal
+    editProductModal.classList.remove('show');
+}
+
+

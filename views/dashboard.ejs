@@ -228,6 +228,78 @@
         </form>
     </div>
 
+    <div class="add-product-modal">
+        <form id="add-product-form" action="./admin-add-product" method="POST" enctype="multipart/form-data">
+            <h2>Add Product</h2>
+            <div class="inputfield">
+                <label for="productname">Product Name</label>
+                <input type="text" id="product_name" name="product_name" required>
+            </div>
+            <div class="inputfield">
+                <label for="image">Image</label>
+                <input type="file" id="image" name="image_loc" accept="image/*" required>
+            </div>
+            <div class="inputfield">
+                <label for="category">Category</label>
+                <select id="category" name="category" required>
+                    <option value="sc">Slice Cake</option>
+                    <option value="cc">Cupcake</option>
+                    <option value="md">Mini-Donut</option>
+                </select>
+            </div>
+            <div class="inputfield">
+                <label for="qtystocks">Quantity in Stocks</label>
+                <input type="number" id="qtystocks" name="qty_stocks" required>
+            </div>
+            <div class="inputfield">
+                <label for="description">Product Description</label>
+                <input type="text" id="description" name="product_description" required>
+            </div>
+            <div class="inputfield">
+                <label for="price">Price</label>
+                <input type="number" id="price" name="price" required>
+            </div>
+            <button type="submit">Add Product</button>
+            <button class="close-button">Close</button>
+        </form>
+    </div>
+
+    <div class="edit-product-modal">
+        <form id="edit-product-form" action="./admin-edit-product" method="POST">
+            <h2>Edit Product</h2>
+            <input type="hidden" id="edit-product-id" name="edit-product-id">
+            <div class="inputfield">
+                <label for="edit-productname">Product Name</label>
+                <input type="text" id="edit-productname" name="edit-productname" required>
+            </div>
+            <div class="inputfield">
+                <label for="edit-image">Image</label>
+                <input type="file" id="edit-image" name="edit-image" required>
+            </div>
+            <div class="inputfield">
+                <label for="edit-category">Category</label>
+                <select id="edit-category" name="edit-category" required>
+                    <option value="sc">Slice Cake</option>
+                    <option value="cc">Cupcake</option>
+                    <option value="md">Mini-Donut</option>
+                </select>
+            </div>
+            <div class="inputfield">
+                <label for="edit-qtystocks">Quantity in Stocks</label>
+                <input type="text" id="edit-qtystocks" name="edit-qtystocks" required>
+            </div>
+            <div class="inputfield">
+                <label for="edit-description">Product Description</label>
+                <input type="text" id="edit-description" name="edit-description" required>
+            </div>
+            <div class="inputfield">
+                <label for="edit-price">Price</label>
+                <input type="text" id="edit-price" name="edit-price" required>
+            </div>
+            <button type="submit">Save Changes</button>
+            <button class="close-button" id="close-button-edit">Close</button>
+        </form>
+    </div>
 </body>
 
 <script src="../scripts/dashboard.js" defer></script>
