@@ -82,6 +82,12 @@ router.get('/uptime', (req, res) => {
 router.get('/dashboard', isAdmin, (req, res) => {
     const usersQuery = `SELECT * FROM users WHERE username != 'admin' AND id != 1`;
     const productsQuery = `SELECT * FROM products`;
+    const transactionsQuery = `
+        SELECT orders.id, users.fullname, orders.delivery_date, orders.delivery_time, order_items.product_id, order_items.price, order_items.quantity
+        FROM orders
+        JOIN order_items ON orders.id = order_items.order_id
+        JOIN users ON orders.user_id = users.id
+    `;
 
     db.query(usersQuery, (usersErr, usersResults) => {
         if (usersErr) {
@@ -97,23 +103,31 @@ router.get('/dashboard', isAdmin, (req, res) => {
                 return;
             }
 
-            const totalUsers = usersResults.length;
-            const totalProducts = productsResults.length;
-            const activeUsers = usersResults.filter(user => user.isActive).length;
-            const systemUptime = calculateSystemUptime();
+            db.query(transactionsQuery, (transactionsErr, transactionsResults) => {
+                if (transactionsErr) {
+                    console.error(transactionsErr);
+                    res.sendStatus(500);
+                    return;
+                }
 
-            res.render('dashboard', {
-                users: usersResults,
-                products: productsResults,
-                totalUsers: totalUsers,
-                totalProducts: totalProducts,
-                activeUsers: activeUsers,
-                systemUptime: systemUptime
+                const totalUsers = usersResults.length;
+                const totalProducts = productsResults.length;
+                const activeUsers = usersResults.filter(user => user.isActive).length;
+                const systemUptime = calculateSystemUptime();
+
+                res.render('dashboard', {
+                    users: usersResults,
+                    products: productsResults,
+                    totalUsers: totalUsers,
+                    totalProducts: totalProducts,
+                    activeUsers: activeUsers,
+                    systemUptime: systemUptime,
+                    transactions: transactionsResults
+                });
             });
         });
     });
-});
-
+})
 
 
 router.post('/admin-add', isAdmin, (req, res) => {
@@ -243,6 +257,11 @@ router.post('/admin-edit-product', isAdmin, (req, res) => {
         res.redirect('/admin/dashboard#products-section');
     });
 });
+
+
+
+
+
 
 
 

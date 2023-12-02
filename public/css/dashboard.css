@@ -849,3 +849,28 @@ option {
     background-color: var(--accent);
     color: var(--text-color);
 }
+
+
+
+/* TRANSACTIONS */
+.transactions-table {
+    width: 100%;
+    border-collapse: separate;
+    padding: 1rem;
+}
+
+.transactions-table th {
+    padding: 1rem;
+    text-align: left;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+.transactions-table thead tr th{
+    background-color: var(--bg-color);
+}
+
+.transactions-table tbody tr td {
+    background-color: var(--text-color);
+}

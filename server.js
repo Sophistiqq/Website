@@ -179,6 +179,7 @@ app.use('/admin', adminRoutes);
 // Server-side JavaScript
 app.post('/checkout', (req, res) => {
     let order = req.body;
+    console.log(order)
     db.query('INSERT INTO orders (user_id, delivery_date, delivery_time) VALUES (?, ?, ?)', [order.userId, order.deliveryDate, order.deliveryTime], (err, result) => {
         if (err) {
             console.error(err);
