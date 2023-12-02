@@ -33,11 +33,14 @@ app.use(
 
 // Create a connection to the MySQL database
 const db = mysql.createConnection({
-    host: 'sql.000webhost.com',
-    user: 'id21608345_breadbites',
-    password: 'Roi09153445041...',
-    database: 'breadbites'
+    uri: 'mysql://avnadmin:AVNS__I1qTDQJdXjTU4WAgRX@breadbites-breadbites.a.aivencloud.com:10293/defaultdb?ssl-mode=REQUIRED',
+    // host: 'breadbites-breadbites.a.aivencloud.com',
+    // user: 'avnadmin',
+    // password: 'AVNS__I1qTDQJdXjTU4WAgRX',
+    // database: 'defaultdb',
+    // port: '10293',
 });
+
 
 const sessionStore = new MySQLStore({}, db);
 // Configure session middleware
