@@ -227,6 +227,23 @@ router.delete('/admin-delete-product', isAdmin, (req, res) => {
         res.redirect('/admin/dashboard#products-section');
     });
 });
+// Route for editing a product
+router.post('/admin-edit-product', isAdmin, (req, res) => {
+    const { 'edit-product-id': productId, 'edit-product_name': productName, 'edit-category': category, 'edit-qtystocks': qtyStocks, 'edit-product_description': productDescription, 'edit-price': price } = req.body;
+    
+    console.log(req.body);
+    // Query to update the product in the database
+    const query = `UPDATE products SET product_name = ?, category = ?, qty_stocks = ?, product_description = ?, price = ? WHERE product_id = ?`;
+    db.query(query, [productName, category, qtyStocks, productDescription, price, productId], (err, results) => {
+        if (err) {
+            console.error(err);
+            res.sendStatus(500);
+            return;
+        }
+
+        res.redirect('/admin/dashboard#products-section');
+    });
+});
 
 
 

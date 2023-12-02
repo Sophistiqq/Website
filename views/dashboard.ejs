@@ -74,6 +74,8 @@
                         <th>Name</th>
                         <th>Price</th>
                         <th>Category</th>
+                        <th>Quantity</th>
+                        <th>Description</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -91,6 +93,8 @@
                                 Mini-Donut
                             <% } %>
                         </td>
+                        <td data-th="Quantity"><%= product.qty_stocks %></td>
+                        <td data-th="Description"><%= product.product_description %></td>
                     </tr>
                     <% }); %>
                 </tbody>
@@ -158,11 +162,11 @@
             </div>
             <div class="inputfield">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
+                <input type="text" id="username" name="username" required autocomplete="username">
             </div>
             <div class="inputfield">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" required autocomplete="email">
             </div>
             <div class="inputfield">
                 <label for="password">Password</label>
@@ -174,7 +178,7 @@
             </div>
             <div class="inputfield">
                 <label for="address">Address</label>
-                <input type="text" id="address" name="address" required>
+                <input type="text" id="address" name="address" required autocomplete="street-address">
             </div>
             <div class="inputfield">
                 <label for="role">Role</label>
@@ -198,11 +202,11 @@
             </div>
             <div class="inputfield">
                 <label for="edit-username">Username</label>
-                <input type="text" id="edit-username" name="edit-username" required>
+                <input type="text" id="edit-username" name="edit-username" required autocomplete="username">
             </div>
             <div class="inputfield">
                 <label for="edit-email">Email</label>
-                <input type="email" id="edit-email" name="edit-email" required>
+                <input type="email" id="edit-email" name="edit-email" required autocomplete="email">
             </div>
             <div class="inputfield">
                 <label for="edit-password">Password</label>
@@ -214,7 +218,7 @@
             </div>
             <div class="inputfield">
                 <label for="edit-address">Address</label>
-                <input type="text" id="edit-address" name="edit-address" required>
+                <input type="text" id="edit-address" name="edit-address" required autocomplete="street-address">
             </div>
             <div class="inputfield">
                 <label for="edit-role">Role</label>
@@ -232,7 +236,7 @@
         <form id="add-product-form" action="./admin-add-product" method="POST" enctype="multipart/form-data">
             <h2>Add Product</h2>
             <div class="inputfield">
-                <label for="productname">Product Name</label>
+                <label for="product_name">Product Name</label>
                 <input type="text" id="product_name" name="product_name" required>
             </div>
             <div class="inputfield">
@@ -263,22 +267,18 @@
             <button class="close-button">Close</button>
         </form>
     </div>
-
+    
     <div class="edit-product-modal">
         <form id="edit-product-form" action="./admin-edit-product" method="POST">
             <h2>Edit Product</h2>
-            <input type="hidden" id="edit-product-id" name="edit-product-id">
+            <input type="hidden" id="edit-product-id" name="edit-product-id" required>
             <div class="inputfield">
-                <label for="edit-productname">Product Name</label>
-                <input type="text" id="edit-productname" name="edit-productname" required>
-            </div>
-            <div class="inputfield">
-                <label for="edit-image">Image</label>
-                <input type="file" id="edit-image" name="edit-image" required>
+                <label for="edit-product_name">Product Name</label>
+                <input type="text" id="edit-product_name" name="edit-product_name" >
             </div>
             <div class="inputfield">
                 <label for="edit-category">Category</label>
-                <select id="edit-category" name="edit-category" required>
+                <select id="edit-category" name="edit-category" >
                     <option value="sc">Slice Cake</option>
                     <option value="cc">Cupcake</option>
                     <option value="md">Mini-Donut</option>
@@ -286,20 +286,21 @@
             </div>
             <div class="inputfield">
                 <label for="edit-qtystocks">Quantity in Stocks</label>
-                <input type="text" id="edit-qtystocks" name="edit-qtystocks" required>
+                <input type="number" id="edit-qtystocks" name="edit-qtystocks"  >
             </div>
             <div class="inputfield">
                 <label for="edit-description">Product Description</label>
-                <input type="text" id="edit-description" name="edit-description" required>
+                <input type="text" id="edit-description" name="edit-product_description" >
             </div>
             <div class="inputfield">
                 <label for="edit-price">Price</label>
-                <input type="text" id="edit-price" name="edit-price" required>
+                <input type="number" id="edit-price" name="edit-price" >
             </div>
             <button type="submit">Save Changes</button>
-            <button class="close-button" id="close-button-edit">Close</button>
+            <button class="close-button" type="button">Close</button>
         </form>
-    </div>
+    </div>  
+    
 </body>
 
 <script src="../scripts/dashboard.js" defer></script>

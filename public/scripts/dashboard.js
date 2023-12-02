@@ -234,16 +234,21 @@ function openEditProductModal() {
     if (!highlightedRow) return;
 
     // Populate the edit product modal with the product data
-    var inputs = document.querySelectorAll('.edit-product-modal input, .edit-product-modal select');
-    inputs[0].value = highlightedRow.querySelector('td[data-th="ID"]').textContent;
-    inputs[1].value = highlightedRow.querySelector('td[data-th="Name"]').textContent;
-    inputs[2].value = highlightedRow.querySelector('td[data-th="Price"]').textContent;
-    inputs[3].value = highlightedRow.querySelector('td[data-th="Category"]').textContent;
+    document.getElementById('edit-product-id').value = highlightedRow.querySelector('td[data-th="ID"]').textContent;
+    document.getElementById('edit-product_name').value = highlightedRow.querySelector('td[data-th="Name"]').textContent;
+    document.getElementById('edit-price').value = highlightedRow.querySelector('td[data-th="Price"]').textContent;
+
+    var categoryText = highlightedRow.querySelector('td[data-th="Category"]').textContent;
+    document.getElementById('edit-category').value = categoryText === 'Slice Cake' ? 'sc' : categoryText === 'Cupcake' ? 'cc' : 'md';
+
+    var quantityText = highlightedRow.querySelector('td[data-th="Quantity"]').textContent;
+    document.getElementById('edit-qtystocks').value = parseInt(quantityText, 10);
+
+    document.getElementById('edit-description').value = highlightedRow.querySelector('td[data-th="Description"]').textContent;
 
     // Show the edit product modal
     editProductModal.classList.add('show');
 }
-
 // Select the close button in the edit product modal
 var closeEditProductButton = document.querySelector('.edit-product-modal .close-button');
 
