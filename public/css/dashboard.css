@@ -28,7 +28,8 @@ body {
 .nav {
     width: 15vw;
     height: 100vh;
-    background-color: rgba(244, 244, 244, 0.75); /* Updated background color with transparency */
+    background-color: rgba(244, 244, 244, 0.75);
+    /* Updated background color with transparency */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -508,10 +509,12 @@ tbody tr:hover {
     border-top: 1px solid lighten(#34495E, 10%);
     border-bottom: 1px solid lighten(#34495E, 10%);
 }
+
 .product-row.highlight {
     background-color: var(--accent);
 
 }
+
 #products-section h1 {
     font-weight: normal;
     letter-spacing: -1px;
@@ -856,7 +859,7 @@ option {
 .transactions-table {
     width: 100%;
     border-collapse: separate;
-    padding: 1rem;
+    border-spacing: 0 1rem;
 }
 
 .transactions-table th {
@@ -867,10 +870,57 @@ option {
     font-weight: bold;
 }
 
-.transactions-table thead tr th{
+.transactions-table thead tr th {
     background-color: var(--bg-color);
 }
 
 .transactions-table tbody tr td {
     background-color: var(--text-color);
 }
+
+#transactions {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 2em;
+    font-family: Montserrat, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(5px);
+    border-radius: 10px;
+    min-height: auto;
+}
+
+#transactions h1 {
+    font-weight: normal;
+    letter-spacing: -1px;
+    color: #34495E;
+    padding: 1em 0;
+}
+
+/* FILEPATH: /c:/Users/roifo/Desktop/Website/Website/public/css/dashboard.css */
+
+.products select {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.products select:hover {
+    border-color: var(--accent);
+}
+
+.products select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.products option {
+    border-radius: 0;
+}   

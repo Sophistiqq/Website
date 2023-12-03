@@ -82,11 +82,11 @@ router.get('/uptime', (req, res) => {
 router.get('/dashboard', isAdmin, (req, res) => {
     const usersQuery = `SELECT * FROM users WHERE username != 'admin' AND id != 1`;
     const productsQuery = `SELECT * FROM products`;
-    const transactionsQuery = `
+    const ordersQuery = `
         SELECT orders.id, users.fullname, orders.delivery_date, orders.delivery_time, order_items.product_id, order_items.price, order_items.quantity
         FROM orders
-        JOIN order_items ON orders.id = order_items.order_id
         JOIN users ON orders.user_id = users.id
+        JOIN order_items ON orders.id = order_items.order_id
     `;
 
     db.query(usersQuery, (usersErr, usersResults) => {
@@ -103,12 +103,36 @@ router.get('/dashboard', isAdmin, (req, res) => {
                 return;
             }
 
-            db.query(transactionsQuery, (transactionsErr, transactionsResults) => {
-                if (transactionsErr) {
-                    console.error(transactionsErr);
+            db.query(ordersQuery, (ordersErr, ordersResults) => {
+                if (ordersErr) {
+                    console.error(ordersErr);
                     res.sendStatus(500);
                     return;
                 }
+
+                const transactions = ordersResults.reduce((acc, order) => {
+                    let transaction = acc.find(t => t.id === order.id);
+                    if (!transaction) {
+                        transaction = {
+                            id: order.id,
+                            fullname: order.fullname,
+                            delivery_date: order.delivery_date,
+                            delivery_time: order.delivery_time,
+                            productOrders: [],
+                            totalPrice: 0
+                        };
+                        acc.push(transaction);
+                    }
+                    const totalPrice = order.price * order.quantity;
+                    transaction.productOrders.push({
+                        productName: productsResults.find(p => p.product_id === order.product_id).product_name,
+                        price: order.price,
+                        quantity: order.quantity,
+                        totalPrice: totalPrice
+                    });
+                    transaction.totalPrice += totalPrice;
+                    return acc;
+                }, []);
 
                 const totalUsers = usersResults.length;
                 const totalProducts = productsResults.length;
@@ -118,16 +142,16 @@ router.get('/dashboard', isAdmin, (req, res) => {
                 res.render('dashboard', {
                     users: usersResults,
                     products: productsResults,
+                    transactions: transactions,
                     totalUsers: totalUsers,
                     totalProducts: totalProducts,
                     activeUsers: activeUsers,
-                    systemUptime: systemUptime,
-                    transactions: transactionsResults
+                    systemUptime: systemUptime
                 });
             });
         });
     });
-})
+});
 
 
 router.post('/admin-add', isAdmin, (req, res) => {

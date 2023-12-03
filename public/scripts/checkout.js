@@ -28,13 +28,15 @@ confirmButton.addEventListener('click', function (event) {
         };
     });
 
-    
     let order = {
         userId: userId,
         deliveryDate: deliveryDate,
         deliveryTime: deliveryTime,
         productOrders: productOrders
     };
+
+    console.log(order); // Log the data that will be sent
+
     fetch('/checkout', {
         method: 'POST',
         headers: {

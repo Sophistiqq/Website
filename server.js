@@ -176,35 +176,67 @@ app.use('/admin', adminRoutes);
 
 
 
-// Server-side JavaScript
 app.post('/checkout', (req, res) => {
-    let order = req.body;
-    console.log(order)
-    db.query('INSERT INTO orders (user_id, delivery_date, delivery_time) VALUES (?, ?, ?)', [order.userId, order.deliveryDate, order.deliveryTime], (err, result) => {
+    const order = req.body;
+
+    db.beginTransaction((err) => {
         if (err) {
             console.error(err);
             res.sendStatus(500);
             return;
         }
-        let orderId = result.insertId;
-        let productOrders = order.productOrders;
-        productOrders.forEach(productOrder => {
-            db.query('SELECT product_id FROM products WHERE product_name = ?', [productOrder.productName], (err, result) => {
-                if (err) {
+
+        const insertOrderQuery = `INSERT INTO orders (user_id, delivery_date, delivery_time) VALUES (?, ?, ?)`;
+        db.query(insertOrderQuery, [order.userId, order.deliveryDate, order.deliveryTime], (err, result) => {
+            if (err) {
+                return db.rollback(() => {
                     console.error(err);
                     res.sendStatus(500);
-                    return;
-                }
-                let productId = result[0].product_id;
-                db.query('INSERT INTO order_items (order_id, product_id, price, quantity) VALUES (?, ?, ?, ?)', [orderId, productId, productOrder.price, productOrder.quantity], err => {
-                    if (err) {
-                        console.error(err);
-                        res.sendStatus(500);
-                        return;
-                    }
+                });
+            }
+
+            const orderId = result.insertId;
+
+            const productOrdersPromises = order.productOrders.map((productOrder) => {
+                const findProductQuery = `SELECT product_id FROM products WHERE product_name = ?`;
+                return new Promise((resolve, reject) => {
+                    db.query(findProductQuery, [productOrder.productName], (err, results) => {
+                        if (err) {
+                            return reject(err);
+                        }
+
+                        const productId = results[0].product_id;
+                        const insertOrderItemQuery = `INSERT INTO order_items (order_id, product_id, price, quantity) VALUES (?, ?, ?, ?)`;
+                        db.query(insertOrderItemQuery, [orderId, productId, productOrder.price, productOrder.quantity], (err) => {
+                            if (err) {
+                                return reject(err);
+                            }
+
+                            resolve();
+                        });
+                    });
                 });
             });
+
+            Promise.all(productOrdersPromises)
+                .then(() => {
+                    db.commit((err) => {
+                        if (err) {
+                            return db.rollback(() => {
+                                console.error(err);
+                                res.sendStatus(500);
+                            });
+                        }
+
+                        res.sendStatus(200);
+                    });
+                })
+                .catch((err) => {
+                    db.rollback(() => {
+                        console.error(err);
+                        res.sendStatus(500);
+                    });
+                });
         });
-        res.sendStatus(200);
     });
 });
