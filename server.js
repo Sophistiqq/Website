@@ -19,6 +19,18 @@ app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 
 
+const https = require('https');
+const fs = require('fs');
+
+const options = {
+    key: fs.readFileSync('key.pem'),
+    cert: fs.readFileSync('cert.pem')
+};
+
+https.createServer(options, app).listen(8080, () => {
+    console.log('Server is running on port https://localhost:8080');
+});
+
 // Configure Content Security Policy
 app.use(
     helmet.contentSecurityPolicy({
@@ -33,11 +45,11 @@ app.use(
 
 // Create a connection to the MySQL database
 const db = mysql.createConnection({
-    // uri: 'mysql://avnadmin:AVNS__I1qTDQJdXjTU4WAgRX@breadbites-breadbites.a.aivencloud.com:10293/breadbites?ssl-mode=REQUIRED',
-    host: 'localhost',
-    user: 'root',
-    password: '091534',
-    database: 'breadbites',
+    uri: 'mysql://avnadmin:AVNS__I1qTDQJdXjTU4WAgRX@breadbites-breadbites.a.aivencloud.com:10293/breadbites?ssl-mode=REQUIRED',
+    // host: 'localhost',
+    // user: 'root',
+    // password: '091534',
+    // database: 'breadbites',
 });
 
 
@@ -54,11 +66,6 @@ app.use(session({
 // Route for the home page
 app.get('/', (req, res) => {
     res.render('index', { loggedIn: req.session.loggedIn, role: req.session.role });
-});
-
-// Start the server
-app.listen(8080, () => {
-    console.log('Server is running on port http://localhost:8080');
 });
 
 

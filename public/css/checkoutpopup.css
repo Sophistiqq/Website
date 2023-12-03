@@ -22,6 +22,7 @@
     pointer-events: none;
     visibility: hidden;
     transition: all 0.3s ease-in-out;
+    overflow-y: auto; /* Added this line to make the container scrollable */
 }
 .checkout-form-container.show {
     opacity: 1;
@@ -29,78 +30,82 @@
     visibility: visible;
 }
 
-
-#checkout-form {
-    background-color: var(--secondary-color);
-    padding: 5rem;
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    border-radius: 1rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
 .checkout-container {
-    display: flex;
-    flex-direction: column;
-}
-
-.checkout-heading {
-    color: var(--text-color);
-    font-family: var(--font-family);
-    font-size: 24px;
-    margin-bottom: 16px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: var(--secondary-color);
+    padding: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .checkout-cart,
 .delivery-options,
 .checkout-total {
-    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
 }
 
 .cart-items {
-    width: 70%;
-}
-
-.cart-items thead {
-    background-color: var(--primary-color);
-    color: var(--text-color);
-}
-
-.cart-items th,
-.cart-items td {
-    padding: 8px;
-    text-align: left;
-}
-
-.delivery-date,
-.delivery-time {
-    margin-bottom: 16px;
-    padding: 1rem;
+    width: 100%;
+    overflow-x: auto;
 }
 
 .checkout-buttons {
     display: flex;
-    justify-content: center;
-    margin-top: 16px;
+    flex-direction: row;
+    justify-content: space-between;
+    gap:1rem;
 }
-
-#checkout-cancel,
-#checkout-confirm {
-    margin-right: 8px;
-    padding: 12px 24px;
+.checkout-buttons button {
+    padding: 0.5rem 1rem;
+    margin-right: 0.5rem;
     background-color: var(--primary-color);
-    color: var(--text-color);
-    font-family: var(--font-family);
-    font-size: 16px;
+    color: var(--secondary-color);
     border: none;
-    border-radius: .5rem;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
 }
 
-#checkout-cancel:hover,
-#checkout-confirm:hover {
+.checkout-buttons button:hover {
     background-color: var(--accent);
+}
+
+@media (min-width: 768px) {
+    .checkout-cart,
+    .delivery-options,
+    .checkout-total {
+        flex-direction: row;
+    }
+
+    .checkout-buttons {
+        flex-direction: row;
+    }
+}
+
+#checkout-cart-items {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+#checkout-cart-items th,
+#checkout-cart-items td {
+    padding: 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--secondary-color);
+}
+
+#checkout-cart-items th {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+#checkout-cart-items tbody tr:nth-child(even) {
+    background-color: var(--secondary-color);
+}
+
+#checkout-cart-items tbody tr:hover {
+    background-color: var(--accent);
+    color: var(--secondary-color);
 }
 

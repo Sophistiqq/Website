@@ -69,6 +69,9 @@ body {
     gap: 4rem;
 }
 
+.products::-webkit-scrollbar {
+    display: none;
+}
 .sections {
     flex: 1;
     display: flex;
@@ -93,6 +96,11 @@ body {
 .cart-modal {
     flex: 1;
     background-color: #fff;
+    overflow-y: auto;
+    border-top-left-radius: 1rem;
+}
+.cart-modal::-webkit-scrollbar {
+    display: none;
 }
 
 .categories {
@@ -340,4 +348,9 @@ body {
 
 .item-quantity button {
     width: 100%;
+}
+
+.cart-items {
+    min-height: auto;
+    overflow-y: auto;
 }
