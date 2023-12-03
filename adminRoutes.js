@@ -14,12 +14,14 @@ router.use((req, res, next) => {
 });
 // Create a connection to the MySQL database
 const db = mysql.createConnection({
-    uri: 'mysql://avnadmin:AVNS__I1qTDQJdXjTU4WAgRX@breadbites-breadbites.a.aivencloud.com:10293/breadbites?ssl-mode=REQUIRED',
-    // host: 'localhost',
-    // user: 'root',
-    // password: '091534',
-    // database: 'breadbites',
+    // uri: 'mysql://avnadmin:AVNS__I1qTDQJdXjTU4WAgRX@breadbites-breadbites.a.aivencloud.com:10293/defaultdb?ssl-mode=REQUIRED',
+    host: 'breadbites-breadbites.a.aivencloud.com',
+    user: 'avnadmin',
+    password: 'AVNS__I1qTDQJdXjTU4WAgRX',
+    database: 'breadbites',
+    port: 10293,
 });
+
 
 // Middleware to check if the user is an admin
 const isAdmin = (req, res, next) => {

@@ -45,11 +45,12 @@ app.use(
 
 // Create a connection to the MySQL database
 const db = mysql.createConnection({
-    uri: 'mysql://avnadmin:AVNS__I1qTDQJdXjTU4WAgRX@breadbites-breadbites.a.aivencloud.com:10293/breadbites?ssl-mode=REQUIRED',
-    // host: 'localhost',
-    // user: 'root',
-    // password: '091534',
-    // database: 'breadbites',
+    // uri: 'mysql://avnadmin:AVNS__I1qTDQJdXjTU4WAgRX@breadbites-breadbites.a.aivencloud.com:10293/defaultdb?ssl-mode=REQUIRED',
+    host: 'breadbites-breadbites.a.aivencloud.com',
+    user: 'avnadmin',
+    password: 'AVNS__I1qTDQJdXjTU4WAgRX',
+    database: 'breadbites',
+    port: 10293,
 });
 
 
@@ -245,5 +246,136 @@ app.post('/checkout', (req, res) => {
                     });
                 });
         });
+    });
+});
+
+// Route for displaying user's orders
+app.get('/orders', (req, res) => {
+    // Check if user is logged in
+    if (!req.session.loggedIn) {
+        res.redirect('/');
+        return;
+    }
+
+    // Query to fetch all products
+    const productsQuery = `SELECT * FROM products`;
+    db.query(productsQuery, (err, productsResults) => {
+        if (err) {
+            console.error(err);
+            res.sendStatus(500);
+            return;
+        }
+
+        const ordersQuery = `
+            SELECT orders.id, users.fullname, orders.delivery_date, orders.delivery_time, order_items.product_id, order_items.price, order_items.quantity
+            FROM orders
+            JOIN users ON orders.user_id = users.id
+            JOIN order_items ON orders.id = order_items.order_id
+            WHERE users.id = ?
+        `;
+
+        db.query(ordersQuery, [req.session.userId], (err, ordersResults) => {
+            if (err) {
+                console.error(err);
+                res.sendStatus(500);
+                return;
+            }
+
+            const transactions = ordersResults.reduce((acc, order) => {
+                let transaction = acc.find(t => t.id === order.id);
+                if (!transaction) {
+                    transaction = {
+                        id: order.id,
+                        fullname: order.fullname,
+                        delivery_date: order.delivery_date,
+                        delivery_time: order.delivery_time,
+                        productOrders: [],
+                        totalPrice: 0
+                    };
+                    acc.push(transaction);
+                }
+                const totalPrice = order.price * order.quantity;
+                transaction.productOrders.push({
+                    productName: productsResults.find(p => p.product_id === order.product_id).product_name,
+                    price: order.price,
+                    quantity: order.quantity,
+                    totalPrice: totalPrice
+                });
+                transaction.totalPrice += totalPrice;
+                return acc;
+            }, []);
+
+            // Render the orders view and pass the orders data to it
+            res.render('orders', { transactions: transactions });
+        });
+    });
+});
+
+
+
+// Route for editing an order
+// Route for fetching order details
+app.get('/orders/:orderId', (req, res) => {
+    const orderId = req.params.orderId;
+
+    // Query to get the order details
+    const query = `SELECT * FROM orders WHERE id = ?`;
+    db.query(query, [orderId], (err, results) => {
+        if (err) {
+            console.error(err);
+            res.sendStatus(500);
+            return;
+        }
+
+        // Send the order data as a JSON response
+        res.json(results[0]);
+    });
+});
+
+// Route for canceling an order
+app.get('/orders/cancel/:orderId', (req, res) => {
+    const orderId = req.params.orderId;
+
+    // Query to delete the order items
+    const query1 = `DELETE FROM order_items WHERE order_id = ?`;
+    db.query(query1, [orderId], (err) => {
+        if (err) {
+            console.error(err);
+            res.sendStatus(500);
+            return;
+        }
+
+        // Query to delete the order
+        const query2 = `DELETE FROM orders WHERE id = ?`;
+        db.query(query2, [orderId], (err) => {
+            if (err) {
+                console.error(err);
+                res.sendStatus(500);
+                return;
+            }
+
+            // Redirect back to the orders page
+            res.redirect('/orders');
+        });
+    });
+});
+
+
+// Route for updating an order
+app.put('/orders/:orderId', (req, res) => {
+    const orderId = req.params.orderId;
+    const { deliveryDate, deliveryTime } = req.body;
+
+    // Query to update the order details
+    const query = 'UPDATE orders SET delivery_date = ?, delivery_time = ? WHERE id = ?';
+    db.query(query, [deliveryDate, deliveryTime, orderId], (err, results) => {
+        if (err) {
+            console.error(err);
+            res.sendStatus(500);
+            return;
+        }
+
+        // Send a success message as a JSON response
+        res.json({ success: true });
     });
 });

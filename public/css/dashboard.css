@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500;600&display=swap');
+
 :root {
     --text-color: #ECEFF4;
     --bg-color: #2E3440;
@@ -22,7 +24,6 @@ body {
     background-attachment: fixed;
     background-size: cover;
 }
-
 
 
 .nav {
@@ -93,6 +94,36 @@ body {
     bottom: -5px;
     /* Adjust the value to move the line down */
 }
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .logo {
+        display: none;
+    }
+    .nav {
+        width: 100%;
+        height: auto;
+        position: static;
+        flex-direction: row;
+        padding: 1rem;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .nav .nav-links {
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    .nav .nav-links a {
+        font-size: 1rem;
+    }
+    body {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
 
 
 main {
@@ -857,7 +888,7 @@ option {
 
 /* TRANSACTIONS */
 .transactions-table {
-    width: 100%;
+    /* width: 100%; */
     border-collapse: separate;
     border-spacing: 0 1rem;
 }
@@ -892,6 +923,7 @@ option {
     backdrop-filter: blur(5px);
     border-radius: 10px;
     min-height: auto;
+    overflow: auto;
 }
 
 #transactions h1 {
