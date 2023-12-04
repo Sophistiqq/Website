@@ -44,15 +44,20 @@ app.use(
 
 
 // Create a connection to the MySQL database
+// const db = mysql.createConnection({
+//     // uri: 'mysql://avnadmin:AVNS__I1qTDQJdXjTU4WAgRX@breadbites-breadbites.a.aivencloud.com:10293/defaultdb?ssl-mode=REQUIRED',
+//     host: 'breadbites-breadbites.a.aivencloud.com',
+//     user: 'avnadmin',
+//     password: 'AVNS__I1qTDQJdXjTU4WAgRX',
+//     database: 'breadbites',
+//     port: 10293,
+// });
 const db = mysql.createConnection({
-    // uri: 'mysql://avnadmin:AVNS__I1qTDQJdXjTU4WAgRX@breadbites-breadbites.a.aivencloud.com:10293/defaultdb?ssl-mode=REQUIRED',
-    host: 'breadbites-breadbites.a.aivencloud.com',
-    user: 'avnadmin',
-    password: 'AVNS__I1qTDQJdXjTU4WAgRX',
-    database: 'breadbites',
-    port: 10293,
-});
-
+    host: 'localhost',
+    user: 'root',
+    password: '091534',
+    database: 'breadbites'
+})
 
 const sessionStore = new MySQLStore({}, db);
 // Configure session middleware
@@ -182,7 +187,9 @@ app.use('/admin', adminRoutes);
 
 
 
+const twilio = require('twilio')
 
+const twilioClient = twilio('ACc3a77413478ef8013a39a3b7ef784230','db163d8f103e3eca9c6bf42457e4d441')
 
 app.post('/checkout', (req, res) => {
     const order = req.body;
@@ -228,7 +235,9 @@ app.post('/checkout', (req, res) => {
 
             Promise.all(productOrdersPromises)
                 .then(() => {
-                    db.commit((err) => {
+                    // Fetch the user's contact number
+                    const fetchUserContactQuery = `SELECT contact_number FROM users WHERE id = ?`;
+                    db.query(fetchUserContactQuery, [order.userId], (err, results) => {
                         if (err) {
                             return db.rollback(() => {
                                 console.error(err);
@@ -236,7 +245,27 @@ app.post('/checkout', (req, res) => {
                             });
                         }
 
-                        res.sendStatus(200);
+                        const userContactNumber = results[0].contact_number;
+                        console.log(userContactNumber)
+                        db.commit((err) => {
+                            if (err) {
+                                return db.rollback(() => {
+                                    console.error(err);
+                                    res.sendStatus(500);
+                                });
+                            }
+
+                            // Send an SMS using Twilio
+                            twilioClient.messages.create({
+                                body: 'Your order has been processed successfully.',
+                                from: '+14157693314',
+                                to: `${userContactNumber}`
+                            })
+                            .then(message => console.log(message.sid))
+                            .catch(err => console.error(err));
+
+                            res.sendStatus(200);
+                        });
                     });
                 })
                 .catch((err) => {
