@@ -186,10 +186,11 @@ const router = require('./adminRoutes');
 app.use('/admin', adminRoutes);
 
 
+const axios = require('axios');
+const infobipUrl = 'https://api.infobip.com/sms/1/text/single';
+const infobipCredentials = 'Basic ' + Buffer.from('roi.for.school:Roi09153445041...').toString('base64');
 
-const twilio = require('twilio')
 
-const twilioClient = twilio('ACc3a77413478ef8013a39a3b7ef784230', 'db163d8f103e3eca9c6bf42457e4d441')
 
 app.post('/checkout', (req, res) => {
     const order = req.body;
@@ -246,7 +247,21 @@ app.post('/checkout', (req, res) => {
                         }
 
                         const userContactNumber = results[0].contact_number;
-                        console.log(userContactNumber)
+                        const headers = {
+                            'Authorization': infobipCredentials,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        };
+                        const data = {
+                            'from': 'InfoSMS',
+                            'to': userContactNumber,
+                            'text': 'Your order has been processed successfully.'
+                        };
+                
+                        axios.post(infobipUrl, data, { headers: headers })
+                            .then(response => console.log(response.data))
+                            .catch(err => console.error(err));
+
                         db.commit((err) => {
                             if (err) {
                                 return db.rollback(() => {
@@ -254,15 +269,6 @@ app.post('/checkout', (req, res) => {
                                     res.sendStatus(500);
                                 });
                             }
-
-                            // Send an SMS using Twilio
-                            twilioClient.messages.create({
-                                body: 'Your order has been processed successfully.',
-                                from: '+14157693314',
-                                to: `${userContactNumber}`
-                            })
-                                .then(message => console.log(message.sid))
-                                .catch(err => console.error(err));
 
                             res.sendStatus(200);
                         });
