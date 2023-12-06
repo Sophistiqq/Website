@@ -319,7 +319,8 @@ app.get('/orders', (req, res) => {
                         delivery_date: order.delivery_date,
                         delivery_time: order.delivery_time,
                         productOrders: [],
-                        totalPrice: 0
+                        totalPrice: 0,
+                        totalQuantity: 0 // Add totalQuantity property
                     };
                     acc.push(transaction);
                 }
@@ -332,6 +333,7 @@ app.get('/orders', (req, res) => {
                     totalPrice: totalPrice
                 });
                 transaction.totalPrice += totalPrice;
+                transaction.totalQuantity += order.quantity; // Increment totalQuantity
                 return acc;
             }, []);
 
@@ -405,5 +407,28 @@ app.put('/orders/:orderId', (req, res) => {
 
         // Send a success message as a JSON response
         res.json({ success: true });
+    });
+});
+
+
+// Route for getting product stock
+app.get('/product-stock', (req, res) => {
+    const productName = req.query.name;
+
+    // Query to get the product stock
+    const query = 'SELECT qty_stocks FROM products WHERE product_name = ?';
+    db.query(query, [productName], (err, results) => {
+        if (err) {
+            console.error(err);
+            res.sendStatus(500);
+            return;
+        }
+
+        // Send the product stock as a JSON response
+        if (results.length > 0) {
+            res.json({ stock: results[0].qty_stocks });
+        } else {
+            res.json({ stock: 0 });
+        }
     });
 });

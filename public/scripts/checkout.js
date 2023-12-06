@@ -15,7 +15,7 @@ checkoutButton.addEventListener('click', function () {
     });
 });
 
-confirmButton.addEventListener('click', function (event) {
+confirmButton.addEventListener('click',async function (event) {
     event.preventDefault();
     let deliveryDate = document.querySelector('#delivery-date').value;
     let deliveryTime = document.querySelector('#delivery-time').value;
@@ -51,4 +51,21 @@ confirmButton.addEventListener('click', function (event) {
             alert('Failed to place order.');
         }
     });
+
+    // Check for insufficient stocks
+    let insufficientStocks = await productOrders.some(async order => {
+        let productStocks = await getProductStocks(order.productName);
+        return order.quantity > productStocks;
+    });
+
+    if (insufficientStocks) {
+        alert('Your order has been processed. However, due to insufficient stocks, please expect a delay of 2-3 hours before shipment if you want to deliver it right now.');
+    }
 });
+
+
+async function getProductStocks(productName) {
+    let response = await fetch(`/product-stock?product_name=${encodeURIComponent(productName)}`);
+    let data = await response.json();
+    return data.stock;
+}
