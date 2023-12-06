@@ -172,7 +172,7 @@ app.get('/products', (req, res) => {
             return;
         }
 
-        res.render('products', { products: results, loggedIn: req.session.loggedIn, role: req.session.role, username: req.session.username, id: req.session.userId});
+        res.render('products', { products: results, loggedIn: req.session.loggedIn, role: req.session.role, username: req.session.username, id: req.session.userId });
     });
 });
 
@@ -189,7 +189,7 @@ app.use('/admin', adminRoutes);
 
 const twilio = require('twilio')
 
-const twilioClient = twilio('ACc3a77413478ef8013a39a3b7ef784230','db163d8f103e3eca9c6bf42457e4d441')
+const twilioClient = twilio('ACc3a77413478ef8013a39a3b7ef784230', 'db163d8f103e3eca9c6bf42457e4d441')
 
 app.post('/checkout', (req, res) => {
     const order = req.body;
@@ -261,8 +261,8 @@ app.post('/checkout', (req, res) => {
                                 from: '+14157693314',
                                 to: `${userContactNumber}`
                             })
-                            .then(message => console.log(message.sid))
-                            .catch(err => console.error(err));
+                                .then(message => console.log(message.sid))
+                                .catch(err => console.error(err));
 
                             res.sendStatus(200);
                         });
@@ -323,9 +323,10 @@ app.get('/orders', (req, res) => {
                     };
                     acc.push(transaction);
                 }
+                const product = productsResults.find(p => p.product_id === order.product_id);
                 const totalPrice = order.price * order.quantity;
                 transaction.productOrders.push({
-                    productName: productsResults.find(p => p.product_id === order.product_id).product_name,
+                    productName: product.product_name,
                     price: order.price,
                     quantity: order.quantity,
                     totalPrice: totalPrice
@@ -339,8 +340,6 @@ app.get('/orders', (req, res) => {
         });
     });
 });
-
-
 
 // Route for editing an order
 // Route for fetching order details
