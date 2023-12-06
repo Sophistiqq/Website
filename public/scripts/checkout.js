@@ -59,7 +59,7 @@ confirmButton.addEventListener('click',async function (event) {
     });
 
     if (insufficientStocks) {
-        alert('Your order has been processed. However, due to insufficient stocks, please expect a delay of 2-3 hours before shipment if you want to deliver it right now.');
+        alert('Your order has been processed. However, if you chose a product that has no stock, please expect a delay of 2-3 hours before shipment if you want to deliver it right now.');
     }
 });
 
