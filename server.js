@@ -61,6 +61,13 @@ const db = mysql.createConnection({
 
 const sessionStore = new MySQLStore({}, db);
 // Configure session middleware
+db.connect((err) => {
+    if (err) {
+        throw err;
+    }
+    console.log('Connected to the database');
+});
+
 app.use(session({
     secret: 'Jonaly', // Secret key used to sign the session ID cookie
     resave: false, // Forces the session to be saved back to the session store, even if the session was never modified during the request
@@ -74,14 +81,12 @@ app.get('/', (req, res) => {
     res.render('index', { loggedIn: req.session.loggedIn, role: req.session.role });
 });
 
+app.use((req, res, next) => {
+    res.locals.session = req.session;
+    next();
+});
 
 // Connect to the database
-db.connect((err) => {
-    if (err) {
-        throw err;
-    }
-    console.log('Connected to the database');
-});
 
 // Route for user login
 app.post('/login', (req, res) => {
@@ -102,6 +107,10 @@ app.post('/login', (req, res) => {
             req.session.loggedIn = true;
             req.session.username = username;
             req.session.userId = results[0].id; // Store user ID in session
+            req.session.email = results[0].email; // Store email in session
+            req.session.contact_number = results[0].contact_number; // Store contact number in session
+            req.session.address = results[0].address; // Store address in session
+            req.session.fullname = results[0].fullname; // Store fullname in session
             const role = results[0].role; // Get the role from the database results
             req.session.role = role; // Set the role in the session variables
             if (role === 'admin') {
@@ -160,6 +169,41 @@ app.post('/register', (req, res) => {
         });
     });
 });
+
+app.post('/change-password', (req, res) => {
+    const username = req.session.username; // Get the username from the session
+    const currentPassword = req.body.currentPassword; // Get the current password from the request body
+    const newPassword = req.body.newPassword; // Get the new password from the request body
+
+    // Query to check if the current password is correct
+    const query = `SELECT * FROM users WHERE username = ? AND password = ?`;
+    db.query(query, [username, currentPassword], (err, results) => {
+        if (err) {
+            console.error(err);
+            res.sendStatus(500);
+            return;
+        }
+
+        if (results.length > 0) {
+            // The current password is correct, so we can update the password
+            const updateQuery = `UPDATE users SET password = ? WHERE username = ?`;
+            db.query(updateQuery, [newPassword, username], (err) => {
+                if (err) {
+                    console.error(err);
+                    res.sendStatus(500);
+                    return;
+                }
+
+                // Send a success message
+                res.json({ success: true });
+            });
+        } else {
+            // The current password is incorrect, so we send an error message
+            res.json({ success: false, message: 'Current password is incorrect' });
+        }
+    });
+});
+
 
 // Route for displaying products
 app.get('/products', (req, res) => {

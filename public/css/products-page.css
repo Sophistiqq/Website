@@ -354,3 +354,171 @@ body {
     min-height: auto;
     overflow-y: auto;
 }
+
+
+
+
+
+.profile-modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: visibility 0s linear 0.25s, opacity 0.25s 0s;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.profile-modal .modal-content {
+    background-color: var(--secondary-color);
+    padding: 3rem;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.profile-modal .modal-content .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    color: var(--text-color);
+    cursor: pointer;
+    border: none;
+    background-color: var(--accent);
+    padding: .3rem 1rem;
+    border-radius: .2rem;
+}
+
+.profile-modal .modal-content .modal-title {
+    font-size: 2rem;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-modal .modal-content .modal-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.profile-modal .modal-content .modal-item .item-label {
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.profile-modal .modal-content .modal-item .item-value {
+    color: var(--text-color);
+}
+
+.profile-modal .modal-content .change-password-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.profile-modal.show {
+    opacity: 1;
+    visibility: visible;
+    transition: visibility 0s linear 0s, opacity 0.25s 0s;
+    pointer-events: auto;
+}
+
+.change-password-modal {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: visibility 0s linear 0.25s, opacity 0.25s 0s;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.change-password-modal .modal-content {
+    background-color: var(--secondary-color);
+    padding: 3rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.change-password-modal .modal-content .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    color: var(--text-color);
+    cursor: pointer;
+    border: none;
+    background-color: var(--accent);
+    padding: .3rem 1rem;
+    border-radius: .2rem;
+}
+
+.change-password-modal .modal-content .modal-title {
+    font-size: 2rem;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.change-password-modal .modal-content .modal-item {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.change-password-modal .modal-content .modal-item .item-label {
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.change-password-modal .modal-content .modal-item .item-value {
+    color: var(--text-color);
+    padding: .5rem;
+}
+
+.change-password-modal .modal-content .submit-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.change-password-modal.show {
+    opacity: 1;
+    visibility: visible;
+    transition: visibility 0s linear 0s, opacity 0.25s 0s;
+    pointer-events: auto;
+}

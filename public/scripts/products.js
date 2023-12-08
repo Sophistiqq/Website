@@ -94,3 +94,81 @@ document.getElementById('checkout-form').addEventListener('submit', function(e) 
     // Submit the form
     this.submit();
 });
+
+
+function showProfileModal() {
+    const profileModal = document.querySelector('.profile-modal');
+    profileModal.classList.add('show');
+}
+
+document.querySelector('.profileBtn').addEventListener('click', function(event) {
+    event.preventDefault();
+    showProfileModal();
+});
+
+function hideProfileModal() {
+    const profileModal = document.querySelector('.profile-modal');
+    profileModal.classList.remove('show');
+}
+
+document.querySelector('.close-button').addEventListener('click', function(event) {
+    event.preventDefault();
+    hideProfileModal();
+});
+
+
+function showChangePasswordModal() {
+    const changePasswordModal = document.querySelector('.change-password-modal');
+    changePasswordModal.classList.add('show');
+}
+
+function hideChangePasswordModal() {
+    const changePasswordModal = document.querySelector('.change-password-modal');
+    changePasswordModal.classList.remove('show');
+}
+
+document.querySelector('.change-password-button').addEventListener('click', function(event) {
+    event.preventDefault();
+    showChangePasswordModal();
+});
+
+document.querySelector('.change-password-modal .close-button').addEventListener('click', function(event) {
+    event.preventDefault();
+    hideChangePasswordModal();
+});
+
+document.querySelector('#change-password-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const currentPassword = document.querySelector('#current-password').value;
+    const newPassword = document.querySelector('#new-password').value;
+    const confirmPassword = document.querySelector('#confirm-password').value;
+
+    if (newPassword !== confirmPassword) {
+        alert('New passwords do not match');
+        return;
+    }
+
+    fetch('/change-password', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            currentPassword: currentPassword,
+            newPassword: newPassword,
+        }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Password changed successfully');
+            hideChangePasswordModal();
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+});

@@ -40,7 +40,7 @@
                     <% } else { %>
                         <div class="button-wrapper">
                             <button class="adminBtn cartBtn mobile-only">Open Cart</button>
-                            <a href="/profile" class="profileBtn">Profile</a>
+                            <a href="#" class="profileBtn">Profile</a>
                             <a href="/logout" class="logout" title="Log out"><img src="/images/logout.png" alt=""></a>
                         </div>
                         <% } %>
@@ -53,6 +53,57 @@
 
     </header>
 
+    
+        <!-- profile Popup -->
+        <div class="profile-modal">
+            <div class="modal-content">
+                <button class="close-button">Close</button>
+                <h2 class="modal-title">Profile Information</h2>
+                <div class="modal-item">
+                    <span class="item-label">Username:</span>
+                    <span class="item-value"><%= session.username %></span>
+                </div>
+                <div class="modal-item">
+                    <span class="item-label">Email:</span>
+                    <span class="item-value"><%= session.email %></span>
+                </div>
+                <div class="modal-item">
+                    <span class="item-label">Contact Number:</span>
+                    <span class="item-value"><%= session.contact_number %></span>
+                </div>
+                <div class="modal-item">
+                    <span class="item-label">Address:</span>
+                    <span class="item-value"><%= session.address %></span>
+                </div>
+                <div class="modal-item">
+                    <span class="item-label">Full Name:</span>
+                    <span class="item-value"><%= session.fullname %></span>
+                </div>
+                <button class="change-password-button">Change Password</button>
+
+                <div class="change-password-modal">
+                    <div class="modal-content">
+                        <button class="close-button">Close</button>
+                        <h2 class="modal-title">Change Password</h2>
+                        <form id="change-password-form">
+                            <div class="modal-item">
+                                <label for="current-password" class="item-label">Current Password:</label>
+                                <input type="password" id="current-password" class="item-value" required>
+                            </div>
+                            <div class="modal-item">
+                                <label for="new-password" class="item-label">New Password:</label>
+                                <input type="password" id="new-password" class="item-value" required>
+                            </div>
+                            <div class="modal-item">
+                                <label for="confirm-password" class="item-label">Confirm New Password:</label>
+                                <input type="password" id="confirm-password" class="item-value" required>
+                            </div>
+                            <button type="submit" class="submit-button">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div> 
 
 
     <!-- For signins -->
