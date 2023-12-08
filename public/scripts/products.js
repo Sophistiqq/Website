@@ -164,6 +164,10 @@ document.querySelector('#change-password-form').addEventListener('submit', funct
         if (data.success) {
             alert('Password changed successfully');
             hideChangePasswordModal();
+            // clear the form
+            document.querySelector('#current-password').value = '';
+            document.querySelector('#new-password').value = '';
+            document.querySelector('#confirm-password').value = '';
         } else {
             alert(data.message);
         }
