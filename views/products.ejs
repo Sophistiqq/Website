@@ -60,24 +60,24 @@
                 <button class="close-button">Close</button>
                 <h2 class="modal-title">Profile Information</h2>
                 <div class="modal-item">
-                    <span class="item-label">Username:</span>
-                    <span class="item-value"><%= session.username %></span>
+                    <p class="item-label">Username:</p>
+                    <p class="item-value"><%= session.username %></p>
                 </div>
                 <div class="modal-item">
-                    <span class="item-label">Email:</span>
-                    <span class="item-value"><%= session.email %></span>
+                    <p class="item-label">Email:</p>
+                    <p class="item-value"><%= session.email %></p>
                 </div>
                 <div class="modal-item">
-                    <span class="item-label">Contact Number:</span>
-                    <span class="item-value"><%= session.contact_number %></span>
+                    <p class="item-label">Contact Number:</p>
+                    <p class="item-value"><%= session.contact_number %></p>
                 </div>
                 <div class="modal-item">
-                    <span class="item-label">Address:</span>
-                    <span class="item-value"><%= session.address %></span>
+                    <p class="item-label">Address:</p>
+                    <p class="item-value"><%= session.address %></p>
                 </div>
                 <div class="modal-item">
-                    <span class="item-label">Full Name:</span>
-                    <span class="item-value"><%= session.fullname %></span>
+                    <p class="item-label">Full Name:</p>
+                    <p class="item-value"><%= session.fullname %></p>
                 </div>
                 <button class="change-password-button">Change Password</button>
 
@@ -266,7 +266,7 @@
                             <h1>
                                 <%= product.product_name %>
                             </h1>
-                            <p>
+                            <p class="pinfo">
                                 <%= product.product_description %>
                             </p>
                             <p>Price: <%= product.price %>
@@ -323,6 +323,21 @@
                 </div>
                 <div class="delivery-options">
                     <h2 class="checkout-heading">Delivery Options</h2>
+                    
+                    <div class="delivery-address-wrapper">
+                        <div class="delivery-address">
+                            <div class="address-options">
+                                <input type="radio" id="my-address" name="addressOption" value="my-address" checked>
+                                <label for="my-address">My Address</label>
+                                <input type="radio" id="another-address" name="addressOption" value="another-address">
+                                <label for="another-address">Another Address</label>
+                            </div>
+                            <div class="address-input">
+                                <input type="text" id="delivery-address" name="deliveryAddress" placeholder="Enter delivery address" disabled>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="delivery-date">
                         <label for="delivery-date">Choose a delivery date:</label>
                         <input type="date" id="delivery-date" name="deliveryDate">

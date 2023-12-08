@@ -92,7 +92,7 @@ body {
     background-color: var(--accent);
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 680px) {
     .product {
         padding: 0.5rem;
         height: auto;
@@ -140,7 +140,7 @@ body {
 .about-content .layout {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: stretch;
     gap: 1rem;
     padding: 1rem;
 }
@@ -203,8 +203,19 @@ footer {
     background-color: var(--primary-color);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 680px) {
     .about-content {
+        flex-direction: column;
+    }
+    main {
+        margin-block: 4rem;
+    }
+    .second-section {
+        padding-block: 4rem;
+        background-color: var(--secondary-color);
+        transform: skewY(-3deg);
+    }
+    .about-content .layout {
         flex-direction: column;
     }
 }

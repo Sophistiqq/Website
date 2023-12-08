@@ -410,6 +410,7 @@ body {
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
+    flex-direction: column;
 }
 
 .profile-modal .modal-content .modal-item .item-label {
@@ -451,6 +452,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     opacity: 0;
     visibility: hidden;
     transition: visibility 0s linear 0.25s, opacity 0.25s 0s;
@@ -488,9 +490,9 @@ body {
 
 .change-password-modal .modal-content .modal-item {
     display: flex;
-    justify-content: space-between;
     flex-direction: column;
     margin-bottom: 10px;
+    flex-direction: column;
 }
 
 .change-password-modal .modal-content .modal-item .item-label {
@@ -522,3 +524,4 @@ body {
     transition: visibility 0s linear 0s, opacity 0.25s 0s;
     pointer-events: auto;
 }
+

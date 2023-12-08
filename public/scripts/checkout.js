@@ -15,10 +15,13 @@ checkoutButton.addEventListener('click', function () {
     });
 });
 
-confirmButton.addEventListener('click',async function (event) {
+confirmButton.addEventListener('click', async function (event) {
     event.preventDefault();
     let deliveryDate = document.querySelector('#delivery-date').value;
     let deliveryTime = document.querySelector('#delivery-time').value;
+    let addressOption = document.querySelector('input[name="addressOption"]:checked').value;
+    let deliveryAddress = addressOption === 'another-address' ? document.querySelector('#delivery-address').value : '';
+
     let productOrders = Array.from(document.querySelector('#checkout-cart-items tbody').children).map(row => {
         let cells = row.children;
         return {
@@ -32,6 +35,8 @@ confirmButton.addEventListener('click',async function (event) {
         userId: userId,
         deliveryDate: deliveryDate,
         deliveryTime: deliveryTime,
+        addressOption: addressOption,
+        deliveryAddress: deliveryAddress,
         productOrders: productOrders
     };
 

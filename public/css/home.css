@@ -142,7 +142,7 @@ main {
     font-size: 2rem;
 }
 .hero-section div {
-    line-height: 2.5rem;
+    /* line-height: 2.5rem; */
     padding-block: 3rem;
 }
 .contacts-section {
@@ -383,7 +383,7 @@ main {
         font-size: 1.5rem;
     }
     .hero-section div {
-        line-height: 3rem;
+        /* line-height: 3rem; */
         padding-block: 1rem;
     }
     .main {
@@ -431,3 +431,7 @@ main {
 }
 
 
+@media screen and (max-width: 400px) {
+    
+    
+}

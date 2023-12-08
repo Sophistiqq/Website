@@ -80,11 +80,50 @@ body {
     margin-inline: 1rem;
 }
 
+
+@media only screen and (max-width: 680px) {
+    .hero-section {
+        font-size: 1.5rem;
+    }
+    .hero-section div {
+        /* line-height: 3rem; */
+        padding-block: 1rem;
+    }
+    .main {
+        flex-direction: column;
+    }
+    .right {
+        display: none;
+    }
+    .logo-footer {
+        display: none;
+    }
+    .signinBtn {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 100;
+    }
+    .nav {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    .links {
+        flex-direction: row;
+        gap: 1rem;
+    }
+    main {
+        height: 100vh;
+    }
+
+}
+
+
 .transactions-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 10px;
-    border-radius: 10px;
     overflow: auto;
 }
 
@@ -229,3 +268,78 @@ body {
 }
 
 
+@media (max-width: 767px) {
+    #transactions {
+        display: none;
+    }
+}
+.transactions-mobile {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .transactions-mobile {
+        display: block;
+    }
+}
+
+
+.transactions-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+.transactions-mobile .transaction {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: var(--primary-color);
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+}
+.transaction-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: .2rem;
+    margin-bottom: 1rem;
+}
+.transaction-details > div .label{
+    font-weight: 600;
+}
+
+.transaction-control {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1rem;
+}
+.transaction-control span a{
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.transaction-control .edit {
+    background-color: var(--bg-color);
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+    color: var(--text-color);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.transaction-control .cancel {
+    background-color: var(--accent);
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+    color: var(--text-color);
+    font-weight: 600;
+    text-decoration: none;
+}

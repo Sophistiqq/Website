@@ -89,6 +89,55 @@
         </table>
     </div>
 
+    <div id="transactions-mobile" class="transactions-mobile">
+        <h1>My Orders</h1>
+        <% transactions.forEach(function(transaction) { %>
+            <div class="transaction">
+                
+                <div class="transaction-details">
+                    <span class="order-id"><b>Order ID:</b> <%= transaction.id %></span>
+                    <div class="product">
+                        <span class="label">Products:</span>
+                        <select>
+                            <% transaction.productOrders.forEach(function(productOrder) { %>
+                                <option><%= productOrder.productName %></option>
+                            <% }); %>
+                        </select>
+                    </div>
+                    <div class="delivery-date">
+                        <span class="label">Delivery Date:</span>
+                        <span class="value"><%= new Date(transaction.delivery_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' }) %></span>
+                    </div>
+                    <div class="delivery-time">
+                        <span class="label">Delivery Time:</span>
+                        <span class="value"><%= new Date('1970-01-01T' + transaction.delivery_time + 'Z').toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) %></span>
+                    </div>
+                    <div class="quantity">
+                        <span class="label">Total Quantity:</span>
+                        <span class="value"><%= transaction.totalQuantity %></span>
+                    </div>
+                    <div class="price">
+                        <span class="label">Price:</span>
+                        <span class="value"><%= transaction.productOrders[0].price %></span>
+                    </div>
+                    <div class="total-price">
+                        <span class="label">Total Price:</span>
+                        <span class="value"><%= transaction.totalPrice %></span>
+                    </div>
+                    <div class="delivery-address">
+                        <span class="label">Delivery Address:</span>
+                        <span class="value"><%= transaction.delivery_address %></span>
+                    </div>
+                </div>
+                <div class="transaction-control">
+                    
+                    <span class="edit"><a href="#">Edit</a></span>
+                    <span class="cancel"><a href="#" class="cancel-link" data-order-id="<%= transaction.id %>">Cancel</a></span>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+
     <div id="editModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -112,103 +161,5 @@
         </div>
     </div>
 </body>
-<script>
-    function convertTo24Hour(time) {
-        var [timePart, period] = time.split(' ');
-        var [hours, minutes] = timePart.split(':');
-
-        if (period === 'PM' && hours !== '12') {
-            hours = Number(hours) + 12;
-        } else if (period === 'AM' && hours === '12') {
-            hours = '00';
-        }
-
-        // Add a leading zero to the hours if it's less than 10
-        if (hours < 10) {
-            hours = '0' + hours;
-        }
-
-        return `${hours}:${minutes}`;
-    }
-
-    window.onload = function() {
-        const editLinks = document.querySelectorAll('.edit a');
-        const editForm = document.querySelector('#editForm');
-        const deliveryDateInput = document.querySelector('#deliveryDate');
-        const deliveryTimeInput = document.querySelector('#deliveryTime');
-        const editOrderIdInput = document.querySelector('#editOrderId');
-        const editModal = document.querySelector('#editModal');
-        const closeModal = document.querySelector('#editModal .close');
-
-        let rawData = {};
-
-        editLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-
-                const row = this.parentNode.parentNode;
-                const orderId = row.querySelector('.order-id').textContent;
-                const deliveryDate = row.querySelector('.delivery-date').textContent;
-                const deliveryTime = row.querySelector('.delivery-time').textContent;
-
-                // Store the raw data in the object
-                rawData = { deliveryDate, deliveryTime };
-
-                // Format the date and time values
-                const formattedDate = new Date(deliveryDate).toISOString().split('T')[0];
-                const formattedTime = convertTo24Hour(deliveryTime);
-
-                deliveryDateInput.value = formattedDate;
-                deliveryTimeInput.value = formattedTime;
-                editOrderIdInput.value = orderId;
-
-                // Show the modal
-                editModal.classList.add('show');
-            });
-        });
-
-        closeModal.addEventListener('click', function() {
-            // Hide the modal
-            editModal.classList.remove('show');
-        });
-
-        // ...
-
-        editForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const orderId = editOrderIdInput.value;
-            const deliveryDate = deliveryDateInput.value;
-            const deliveryTime = deliveryTimeInput.value;
-
-            fetch(`/orders/${orderId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    deliveryDate,
-                    deliveryTime,
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Update the table with the new delivery details
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-        });
-    }
-
-    document.querySelectorAll('.cancel-link').forEach(function(link) {
-        link.addEventListener('click', function(event) {
-            event.preventDefault();
-            const orderId = this.dataset.orderId;
-            if (confirm('Are you sure you want to cancel this order?')) {
-                window.location.href = '/orders/cancel/' + orderId;
-            }
-        });
-    });
-</script>
+<script src="./scripts/orders.js"></script>
 </html>

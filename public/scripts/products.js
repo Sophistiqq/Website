@@ -176,3 +176,18 @@ document.querySelector('#change-password-form').addEventListener('submit', funct
         console.error('Error:', error);
     });
 });
+
+
+const myAddressRadio = document.querySelector('#my-address');
+const anotherAddressRadio = document.querySelector('#another-address');
+const deliveryAddressInput = document.querySelector('#delivery-address');
+
+myAddressRadio.addEventListener('change', () => {
+    deliveryAddressInput.disabled = true;
+});
+
+anotherAddressRadio.addEventListener('change', () => {
+    deliveryAddressInput.disabled = false;
+});
+
+

@@ -13,6 +13,23 @@
             "database": "breadbites",
             "username": "root",
             "password": "091534"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Enabled",
+                "ssl": {
+                    "ca": "C:\\Users\\roifo\\Downloads\\ca.pem"
+                }
+            },
+            "previewLimit": 50,
+            "server": "breadbites-breadbites.a.aivencloud.com",
+            "port": 10293,
+            "driver": "MySQL",
+            "name": "Breadbites(Online)",
+            "password": "AVNS__I1qTDQJdXjTU4WAgRX",
+            "username": "avnadmin",
+            "database": "breadbites"
         }
     ]
 }

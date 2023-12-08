@@ -238,7 +238,10 @@ const infobipCredentials = 'Basic ' + Buffer.from('roi.for.school:Roi09153445041
 
 app.post('/checkout', (req, res) => {
     const order = req.body;
-
+    console.log(order)
+    const addressOption = order.addressOption;
+    const deliveryAddress = order.deliveryAddress;
+    let totalCost = 0; // Initialize total cost to 0
     db.beginTransaction((err) => {
         if (err) {
             console.error(err);
@@ -246,8 +249,8 @@ app.post('/checkout', (req, res) => {
             return;
         }
 
-        const insertOrderQuery = `INSERT INTO orders (user_id, delivery_date, delivery_time) VALUES (?, ?, ?)`;
-        db.query(insertOrderQuery, [order.userId, order.deliveryDate, order.deliveryTime], (err, result) => {
+        const insertOrderQuery = `INSERT INTO orders (user_id, delivery_date, delivery_time, delivery_address) VALUES (?, ?, ?, ?)`;
+        db.query(insertOrderQuery, [order.userId, order.deliveryDate, order.deliveryTime, addressOption === 'my-address' ? req.session.address : deliveryAddress], (err, result) => {
             if (err) {
                 return db.rollback(() => {
                     console.error(err);
@@ -258,21 +261,34 @@ app.post('/checkout', (req, res) => {
             const orderId = result.insertId;
 
             const productOrdersPromises = order.productOrders.map((productOrder) => {
-                const findProductQuery = `SELECT product_id FROM products WHERE product_name = ?`;
+                totalCost += productOrder.price * productOrder.quantity; // Add the total cost of the product order to the total cost of the order
+                const findProductQuery = `SELECT product_id, qty_stocks FROM products WHERE product_name = ?`;
                 return new Promise((resolve, reject) => {
                     db.query(findProductQuery, [productOrder.productName], (err, results) => {
                         if (err) {
                             return reject(err);
                         }
-
+``
                         const productId = results[0].product_id;
-                        const insertOrderItemQuery = `INSERT INTO order_items (order_id, product_id, price, quantity) VALUES (?, ?, ?, ?)`;
-                        db.query(insertOrderItemQuery, [orderId, productId, productOrder.price, productOrder.quantity], (err) => {
+                        const currentQtyStocks = results[0].qty_stocks;
+                        const newQtyStocks = currentQtyStocks - productOrder.quantity;
+
+                        const updatedQtyStocks = newQtyStocks >= 0 ? newQtyStocks : 0; // Update the quantity only if it's greater than or equal to 0
+
+                        const updateQtyStocksQuery = `UPDATE products SET qty_stocks = ? WHERE product_id = ?`;
+                        db.query(updateQtyStocksQuery, [updatedQtyStocks, productId], (err) => {
                             if (err) {
                                 return reject(err);
                             }
 
-                            resolve();
+                            const insertOrderItemQuery = `INSERT INTO order_items (order_id, product_id, price, quantity) VALUES (?, ?, ?, ?)`;
+                            db.query(insertOrderItemQuery, [orderId, productId, productOrder.price, productOrder.quantity], (err) => {
+                                if (err) {
+                                    return reject(err);
+                                }
+
+                                resolve();
+                            });
                         });
                     });
                 });
@@ -299,7 +315,7 @@ app.post('/checkout', (req, res) => {
                         const data = {
                             'from': 'InfoSMS',
                             'to': userContactNumber,
-                            'text': 'Your order has been processed successfully.'
+                            'text': `Your order has been processed successfully. Delivery Address: ${addressOption === 'my-address' ? req.session.address : deliveryAddress}. Total Cost: ${totalCost}`
                         };
                 
                         axios.post(infobipUrl, data, { headers: headers })
@@ -346,7 +362,7 @@ app.get('/orders', (req, res) => {
         }
 
         const ordersQuery = `
-            SELECT orders.id, users.fullname, orders.delivery_date, orders.delivery_time, order_items.product_id, order_items.price, order_items.quantity
+            SELECT orders.id, users.fullname, orders.delivery_date, orders.delivery_time, orders.delivery_address, order_items.product_id, order_items.price, order_items.quantity
             FROM orders
             JOIN users ON orders.user_id = users.id
             JOIN order_items ON orders.id = order_items.order_id
@@ -368,6 +384,7 @@ app.get('/orders', (req, res) => {
                         fullname: order.fullname,
                         delivery_date: order.delivery_date,
                         delivery_time: order.delivery_time,
+                        delivery_address: order.delivery_address,
                         productOrders: [],
                         totalPrice: 0,
                         totalQuantity: 0 // Add totalQuantity property
